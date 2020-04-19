@@ -28,6 +28,8 @@ public:
     Vec2D();
     Vec2D(float x, float y);
     void Set(float x, float y);
+    void Normalize();
+    float Len() const;
     float Cross(const Vec2D v) const;
     float Dot(const Vec2D v) const;
     Vec2D operator=(const Vec2D v);
@@ -54,6 +56,9 @@ public:
     void Print() const;
 };
 
+float Distance(Vec2D v1, Vec2D v2);
+Vec2D Normalize(Vec2D v);
+
 Vec2D operator+(float n, Vec2D v);
 Vec2D operator-(float n, Vec2D v);
 Vec2D operator*(float n, Vec2D v);
@@ -68,6 +73,7 @@ struct Range{
     void Set(float a, float b);
     float GetMax() const;
     float GetMin() const;
+    float Len() const;
     float min;
     float max;
     void Print() const;
@@ -77,6 +83,8 @@ ostream& operator<<(ostream& o, Range range);
 
 Range GetCoveredRange(const Range r1, const Range r2);
 Range CombineRange(const Range r1, const Range r2);
+bool PointInRange(const Range r, float p);
+bool IsRangeCovered(const Range r1, const Range r2);
 
 class Rot2D{
 public:

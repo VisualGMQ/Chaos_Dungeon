@@ -1,3 +1,11 @@
 aux_source_directory(../src TEST_SRC)
 include_directories(../include)
-add_executable(TestMath tmath.cpp ${TEST_SRC})
+
+add_executable(TestMath tmath.cpp)
+add_executable(TestTexture tTexture.cpp)
+add_executable(TestAnimation tAnimation.cpp)
+add_executable(TestOBBvsOBB tOBBvsOBB.cpp)
+add_executable(TestAABBvsAABB tAABBvsAABB.cpp)
+add_executable(TestAABBvsCircle tAABBvsCircle.cpp)
+add_executable(TestCirclevsCircle tCirclevsCircle.cpp)
+add_executable(TestImageFactory tImageFactory.cpp)

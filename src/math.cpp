@@ -7,12 +7,27 @@ Vec2D::Vec2D(float x, float y){
     this->y = y;
 }
 
+void Vec2D::Set(float nx, float ny){
+    x = nx;
+    y = ny;
+}
+
 float Vec2D::Cross(const Vec2D v) const{
     return x*v.y-y*v.x;
 }
 
 float Vec2D::Dot(const Vec2D v) const{
     return x*v.x+y*v.y;
+}
+
+void Vec2D::Normalize(){
+    float len = Len();
+    x /= len;
+    y /= len;
+}
+
+float Vec2D::Len() const{
+    return sqrt(x*x+y*y);
 }
 
 Vec2D Vec2D::operator=(const Vec2D v){
@@ -130,6 +145,17 @@ Vec2D operator/(float n, Vec2D v){
     return v/n;
 }
 
+float Distance(Vec2D v1, Vec2D v2){
+    return sqrt(pow(v1.x-v2.x, 2)+pow(v1.y-v2.y, 2));
+}
+
+Vec2D Normalize(Vec2D v){
+    float len = v.Len();
+    if(len==0)
+        return v;
+    return Vec2D(v.x/len, v.y/len);
+}
+
 void Vec2D::Print() const{
     cout<<"("<<x<<","<<y<<")";
 }
@@ -153,6 +179,10 @@ float Range::GetMin() const{
     return min;
 }
 
+float Range::Len() const{
+    return max-min;
+}
+
 void Range::Print() const{
     cout<<"Range("<<min<<" "<<max<<")";
 }
@@ -163,16 +193,28 @@ ostream& operator<<(ostream& o, Range range){
 }
 
 Range GetCoveredRange(const Range r1, const Range r2){
-    if(r1.GetMax()<=r2.GetMin() || r2.GetMax()<r1.GetMin())
+    if(r1.GetMax()<=r2.GetMin() || r2.GetMax()<=r1.GetMin())
         return Range(0, 0);
     if(r1.GetMin()<=r2.GetMin() && r1.GetMax()<=r2.GetMax())
         return Range(r2.GetMin(), r1.GetMax());
+    if(r1.GetMin()<=r2.GetMin() && r1.GetMax()>=r2.GetMax())
+        return r2;
     if(r2.GetMin()<=r1.GetMin() && r2.GetMax()<=r1.GetMax())
         return Range(r1.GetMin(), r2.GetMax());
+    if(r2.GetMin()<=r1.GetMin() && r2.GetMax()>=r1.GetMax())
+        return r1;
 }
 
 Range CombineRange(const Range r1, const Range r2){
     return Range(std::min(r1.GetMin(), r2.GetMin()), std::max(r1.GetMax(), r2.GetMax()));
+}
+
+bool PointInRange(const Range r, float p){
+    return r.GetMin()<=p && r.GetMax()>=p;
+}
+
+bool IsRangeCovered(const Range r1, const Range r2){
+    return PointInRange(r2, r1.GetMin()) || PointInRange(r2, r1.GetMax()) || PointInRange(r1, r2.GetMin()) || PointInRange(r1, r2.GetMax());
 }
 
 Rot2D::Rot2D():c(1),s(0){}
