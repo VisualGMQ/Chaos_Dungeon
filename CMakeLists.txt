@@ -7,6 +7,7 @@ set(CMAKE_C_FLAGS_DEBUG "-O0 -Wall -g")
 set(CMAKE_CXX_FLAGS_RELEASE"-O3")
 set(CMAKE_C_FLAGS_RELEASE "-O3")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+add_compile_options("-g")
 
 aux_source_directory(src SRC)
 include_directories(include)

@@ -5,6 +5,9 @@
 #include "Texture.hpp"
 #include "Animation.hpp"
 
+class Animation;
+class AnimationS;
+
 void SDL_DrawAABB(SDL_Renderer* render, AABB& aabb);
 void SDL_DrawOBB(SDL_Renderer* render, OBB& obb);
 void SDL_DrawCircle(SDL_Renderer* render, Circle& c);
@@ -13,9 +16,9 @@ void SDL_DrawCircle(SDL_Renderer* render, Circle& c);
  * @param w 如果为0的话表示绘制原来的宽度
  * @param h 如果为0的话表示绘制原来的高度
  */
-void SDL_DrawTexture(Texture& t, int x, int y, int w=0, int h=0);
-void SDL_DrawTextureFromSheet(TextureSheet& ts, int c, int r, int x, int y, int w=0, int h=0);
-void SDL_DrawAnimation(Animation& ani, int x, int y, int w=0, int h=0);
-void SDL_DrawAnimationS(AnimationS& ani, int x, int y, int w=0, int h=0);
+void SDL_DrawTexture(Texture& t, int x, int y, int w=0, int h=0, float degree = 0, FlipFlag flipflag = NO_FLIP);
+void SDL_DrawTextureFromSheet(TextureSheet& ts, int c, int r, int x, int y, int w=0, int h=0, float degree = 0, FlipFlag flipflag = NO_FLIP);
+void SDL_DrawAnimation(Animation& ani, int x, int y, int w=0, int h=0, float degree = 0, FlipFlag flipflag = NO_FLIP);
+void SDL_DrawAnimationS(AnimationS& ani, int x, int y, int w=0, int h=0, float degree=0, FlipFlag = NO_FLIP);
 
 #endif

@@ -23,6 +23,7 @@ int main(int argc, char** argv){
     cout<<"confirm item is exist, size:"<<texture.Width()<<","<<texture.Height()<<endl;
 
     TextureSheet ts("resources/monster1.png", 4, 1);
+    TextureSheet ts2 = ts;
 
     SDL_Event event;
     bool isquit = false;
@@ -36,9 +37,11 @@ int main(int argc, char** argv){
                 isquit = true;
         }
         for(int i=0;i<ts.Col();i++)
-            for(int j=0;j<ts.Row();j++)
+            for(int j=0;j<ts.Row();j++){
                 SDL_DrawTextureFromSheet(ts, i, j, i*50, j*50, 64, 64);
-        SDL_DrawTexture(texture, 100, 100, 100, 100);
+                SDL_DrawTextureFromSheet(ts2, i, j, i*50, j*50+100, 64, 64);
+            }
+        SDL_DrawTexture(texture, 100, 100, 100, 100, 60);
         SDL_RenderPresent(render);
         SDL_Delay(30);
     }

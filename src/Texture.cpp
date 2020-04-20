@@ -80,8 +80,26 @@ int Texture::GetRefcount() const{
 }
 
 Texture& Texture::operator=(const Texture t){
+    if(texture){
+        texture->Release();
+    }
     texture = t.texture;
     texture->Gain();
+    return *this;
+}
+
+void Texture::Draw(int x, int y, int w, int h, float degree, FlipFlag flipflag){
+    if(w==0)
+        w = Width();
+    if(h==0)
+        h = Height();
+    SDL_Rect rect = {x-w/2, y-h/2, w, h};
+    SDL_RendererFlip fflag = SDL_FLIP_NONE;
+    if(flipflag&FLIP_X)
+        fflag = static_cast<SDL_RendererFlip>(static_cast<int>(fflag)|SDL_FLIP_HORIZONTAL);
+    if(flipflag&FLIP_Y)
+        fflag = static_cast<SDL_RendererFlip>(static_cast<int>(fflag)|SDL_FLIP_VERTICAL);
+    SDL_RenderCopyEx(Director::GetInstance()->GetRender(), texture->texture, nullptr, &rect, degree, nullptr, fflag);
 }
 
 Texture::~Texture(){

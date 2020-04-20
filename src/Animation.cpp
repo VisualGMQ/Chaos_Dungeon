@@ -36,6 +36,10 @@ void IAnimation::Pause(){
     isplaying = false;
 }
 
+int IAnimation::GetDelayTime(int idx) const{
+    return delaytime.at(idx);
+}
+
 Animation::Animation(vector<Frame> frame){
     frames = frame;
 }
@@ -97,7 +101,23 @@ void Animation::Update(){
     }
 }
 
-AnimationS::AnimationS(TextureSheet ts, vector<int> delay):texsheet(ts),delaytime(delay){}
+void Animation::Draw(int x, int y, int w, int h, float degree, FlipFlag flipflag) {
+    GetCurrentFrame().texture.Draw(x, y, w, h, degree, flipflag);
+}
+
+AnimationS::AnimationS(string filename, int c, int r, vector<int> delay){
+    Set(filename, c, r, delay);
+}
+
+AnimationS::AnimationS(TextureSheet texsheet, vector<int> delay){
+    this->texsheet = texsheet;
+    delaytime = delay;
+}
+
+void AnimationS::Set(string filename, int c, int r, vector<int> delay){
+    texsheet.Load(filename, c, r);
+    delaytime = delay;
+}
 
 void AnimationS::SetSheet(TextureSheet ts){
     texsheet = ts;
@@ -141,4 +161,8 @@ SDL_Rect AnimationS::GetCurrentRect() const{
 
 TextureSheet& AnimationS::GetSheet(){
     return texsheet;
+}
+
+void AnimationS::Draw(int x, int y, int w, int h, float degree, FlipFlag flipflag) {
+    SDL_DrawTextureFromSheet(texsheet, cur_frame, 0, x, y, w, h, degree, flipflag);
 }

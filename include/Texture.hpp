@@ -3,9 +3,30 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "Director.hpp"
+#include "math.hpp"
 #include <string>
 #include <iostream>
 using namespace std;
+
+enum FlipFlag : unsigned char{
+    FLIP_X = 0x01,
+    FLIP_Y = 0x02,
+    NO_FLIP = 0x00
+};
+
+class Drawable{
+public:
+    /**
+     * @brief 绘制图像
+     * @param x 图像矩形的中点x坐标
+     *          y 图像矩形的中点y坐标
+     *          w 宽度，如果为0表示原始宽度
+     *          h 高度，如果为0表示原始高度
+     *          degree, 旋转的角度，默认不旋转
+     *          flipflag 是否翻转
+     * */
+    virtual void Draw(int x, int y, int w = 0, int h = 0, float degree = 0, FlipFlag flipflag = NO_FLIP) = 0;
+};
 
 struct _texture{
     _texture();
@@ -19,7 +40,7 @@ private:
     int refcount;
 };
 
-class Texture{
+class Texture : Drawable{
 public:
     static Texture NullTexture;
     Texture();
@@ -32,6 +53,7 @@ public:
     int Width();
     int Height();
     Texture& operator=(const Texture t);
+    void Draw(int x, int y, int w = 0, int h = 0, float degree = 0, FlipFlag flipflag = NO_FLIP);
     ~Texture();
 private:
     _texture* texture;

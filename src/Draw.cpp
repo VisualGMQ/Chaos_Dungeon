@@ -25,35 +25,29 @@ void SDL_DrawCircle(SDL_Renderer* render, Circle& c){
     }
 }
 
-void SDL_DrawTexture(Texture& t, int x, int y, int w, int h){
-    SDL_Rect rect = {x, y, w, h};
-    if(w==0)
-        rect.w = t.Width();
-    if(h==0)
-        rect.h = t.Height();
-    SDL_RenderCopy(Director::GetInstance()->GetRender(), t.GetTexture(), nullptr, &rect);
+void SDL_DrawTexture(Texture& t, int x, int y, int w, int h, float degree, FlipFlag flipflag){
+    t.Draw(x, y, w, h, degree, flipflag);
 }
 
-void SDL_DrawTextureFromSheet(TextureSheet& ts, int c, int r, int x, int y, int w, int h){
+void SDL_DrawTextureFromSheet(TextureSheet& ts, int c, int r, int x, int y, int w, int h, float degree, FlipFlag flipflag){
     SDL_Rect rect = ts.Get(c, r);
-    SDL_Rect dst_rect = {x, y, w, h};
     if(w==0)
-        dst_rect.w = ts.Width();
+        w = ts.Width();
     if(h==0)
-        dst_rect.h = ts.Height();
-    SDL_RenderCopy(Director::GetInstance()->GetRender(), ts.GetTexture().GetTexture(), &rect, &dst_rect);
+        h = ts.Height();
+    SDL_Rect dst_rect = {x-w/2, y-w/2, w, h};
+    SDL_RendererFlip fflag = SDL_FLIP_NONE;
+    if(flipflag&FLIP_X)
+        fflag = static_cast<SDL_RendererFlip>(static_cast<int>(fflag)|SDL_FLIP_HORIZONTAL);
+    if(flipflag&FLIP_Y)
+        fflag = static_cast<SDL_RendererFlip>(static_cast<int>(fflag)|SDL_FLIP_VERTICAL);
+    SDL_RenderCopyEx(Director::GetInstance()->GetRender(), ts.GetTexture().GetTexture(), &rect, &dst_rect, degree, nullptr, fflag);
 }
 
-void SDL_DrawAnimation(Animation& ani, int x, int y, int w, int h){
-    SDL_DrawTexture(ani.GetCurrentTexture(), x, y, w, h);
+void SDL_DrawAnimation(Animation& ani, int x, int y, int w, int h, float degree, FlipFlag flipflag){
+    ani.Draw(x, y, w, h, degree, flipflag);
 }
 
-void SDL_DrawAnimationS(AnimationS& ani, int x, int y, int w, int h){
-    SDL_Rect src_rect = ani.GetCurrentRect();
-    SDL_Rect dst_rect = {x, y, w, h};
-    if(w==0)
-        dst_rect.w = ani.GetSheet().Width();
-    if(h==0)
-        dst_rect.h = ani.GetSheet().Height();
-    SDL_RenderCopy(Director::GetInstance()->GetRender(), ani.GetSheet().GetTexture().GetTexture(), &src_rect, &dst_rect);
+void SDL_DrawAnimationS(AnimationS& ani, int x, int y, int w, int h, float degree, FlipFlag flipflag){
+    ani.Draw(x, y, w, h, degree, flipflag);
 }

@@ -1,6 +1,7 @@
 #ifndef ANIMATION_HPP
 #define ANIMATION_HPP
 #include "Texture.hpp"
+#include "Draw.hpp"
 #include <initializer_list>
 #include <vector>
 #include <iostream>
@@ -14,7 +15,7 @@ struct Frame{
     Texture texture;
 };
 
-class IAnimation{
+class IAnimation : public Drawable{
 public:
     IAnimation();
     virtual void EnableLoop();
@@ -23,12 +24,14 @@ public:
     virtual void Play();
     virtual void Stop();
     virtual void Pause();
+    int GetDelayTime(int idx) const;
     virtual size_t Size() const = 0;
     virtual bool Valid() const = 0;
     virtual void Update() = 0;
 protected:
     int cur_frame;
     bool isplaying;
+    vector<int> delaytime;
     int count;
     bool isloop;
 };
@@ -49,6 +52,7 @@ public:
     Frame& operator[](int idx);
     bool Valid() const override;
     void Update() override;
+    void Draw(int x, int y, int w=0, int h=0, float degree = 0,FlipFlag flipflag = NO_FLIP) override;
 private:
     vector<Frame> frames;
 };
@@ -60,7 +64,9 @@ private:
 class AnimationS : public IAnimation{
 public:
     AnimationS() = default;
-    AnimationS(TextureSheet ts, vector<int> delay);
+    AnimationS(TextureSheet texsheet, vector<int> delay);
+    AnimationS(string filename, int c, int r, vector<int> delay);
+    void Set(string filename, int c, int r, vector<int> delay);
     void SetSheet(TextureSheet ts);
     void SetDelayTimes(vector<int> delay);
     size_t Size() const override;
@@ -68,9 +74,9 @@ public:
     bool Valid() const override;
     void Update() override;
     TextureSheet& GetSheet();
+    void Draw(int x, int y, int w=0, int h=0, float degree = 0, FlipFlag flipflag = NO_FLIP) override;
 private:
     TextureSheet texsheet;
-    vector<int> delaytime;
 };
 
 #endif
