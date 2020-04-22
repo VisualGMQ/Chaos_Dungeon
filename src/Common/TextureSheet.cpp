@@ -6,6 +6,19 @@ TextureSheet::TextureSheet(string filename, int col, int row){
     Load(filename, col, row);
 }
 
+TextureSheet::TextureSheet(const TextureSheet& ts){
+    *this = ts; 
+}
+
+TextureSheet& TextureSheet::operator=(const TextureSheet& ts){
+    per_w = ts.per_w;
+    per_h = ts.per_h;
+    col = ts.col;
+    row = ts.row;
+    textures.assign(ts.textures.begin(), ts.textures.end());
+    return *this;
+}
+
 void TextureSheet::Load(string filename, int col, int row){
     SDL_Surface* image = IMG_Load(filename.c_str());
     if(!image){

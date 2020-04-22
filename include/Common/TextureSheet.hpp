@@ -8,6 +8,8 @@ class TextureSheet{
 public:
     TextureSheet();
     TextureSheet(string filename, int col, int row);
+    TextureSheet(const TextureSheet& ts);
+    TextureSheet& operator=(const TextureSheet& ts);
     void Load(string filename, int col, int row);
     Texture& Get(int col, int row);
     void Scale(float sx, float sy);

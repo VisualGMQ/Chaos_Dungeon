@@ -93,3 +93,7 @@ void Animation::Update(){
         }
     }
 }
+
+void Animation::Draw(float x, float y) {
+    CurrentFrame().texture.Draw(x, y);
+}

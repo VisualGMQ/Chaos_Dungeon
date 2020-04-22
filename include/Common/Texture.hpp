@@ -6,11 +6,12 @@
 #include "math.hpp"
 #include "Program.hpp"
 #include "Director.hpp"
+#include "Drawable.hpp"
 #include <string>
 #include <iostream>
 using namespace std;
 
-class Texture{
+class Texture : public Drawable{
 public:
     Texture();
     Texture(const Texture& t);
@@ -27,7 +28,9 @@ public:
     void Width(int w);
     void Height(int h);
     void Scale(float sx, float sy);
-    void Draw(float x, float y);
+    Size Size() const;
+    void Size(float w, float h);
+    void Draw(float x, float y) override;
     ~Texture();
 private:
     void configTexture();
@@ -35,7 +38,7 @@ private:
     void releaseSurface();
     GLuint texid;
     SDL_Surface* surface;
-    Size size;
+    struct Size size;
 };
 
 #endif

@@ -52,6 +52,19 @@ void Texture::Scale(float sx, float sy){
     size.h *= sy;
 }
 
+Size Texture::Size() const{
+    return size;
+}
+
+void Texture::Size(float w, float h){
+    if(w<=0 || h<=0){
+        cerr<<"size can't be 0"<<endl;
+        return;
+    }
+    size.w = w;
+    size.h = h;
+}
+
 void Texture::configTexture(){
     if(!surface)
         return ;

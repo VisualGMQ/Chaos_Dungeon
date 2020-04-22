@@ -7,9 +7,9 @@
 #include "SDL_image.h"
 #include "Director.hpp"
 #include "Program.hpp"
-#include "TextureSheet.hpp"
-#include "Animation.hpp"
+#include "Sprite/MainRole.hpp"
 #include <iostream>
+#include <map>
 using namespace std;
 
 class GameBody{
@@ -20,9 +20,8 @@ public:
 protected:
     void eventHandle();
     void step();
-    Texture texture;
-    TextureSheet sheet;
-    Animation ani;
+    map<SDL_Keysym, bool> keys;
+    MainRole mainrole;
 };
 
 #endif

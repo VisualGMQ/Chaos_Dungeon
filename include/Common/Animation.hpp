@@ -17,7 +17,7 @@ enum class AniPlayState{
     STOPING
 };
 
-class Animation{
+class Animation : public Drawable{
 public:
     Animation();
     Animation(vector<Frame> frame_list);
@@ -43,6 +43,8 @@ public:
     void DisableLoop();
     Frame& CurrentFrame();
     void Update();
+    void Draw(float x, float y) override;
+    ~Animation() = default;
 private:
     vector<Frame> frames;
     AniPlayState state;

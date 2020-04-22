@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(5DayGameChalleng)
+project(7DayGameChalleng)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_BUILD_TYPE Debuge)
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -Wall -g")
@@ -37,6 +37,7 @@ link_libraries("-L${CMAKE_BINARY_DIR} -lcommon")
 
 #generate executable
 aux_source_directory(${CMAKE_SOURCE_DIR}/src/GameBody DEP_SRC)
+aux_source_directory(${CMAKE_SOURCE_DIR}/src/Sprite DEP_SRC)
 add_executable(play main.cpp ${DEP_SRC})
 target_link_libraries(play "common")
 add_custom_command(TARGET play

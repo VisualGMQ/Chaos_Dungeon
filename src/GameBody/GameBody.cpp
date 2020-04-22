@@ -16,14 +16,8 @@ GameBody::GameBody(){
         cerr<<"glew init failed"<<endl;
     }
     Director::Init(window, 800, 600, 30);
-
-    texture.Load("resources/monster1_stand.png");
-    texture.Scale(10, 10);
-    sheet.Load("resources/monster1_walk.png", 2, 1);
-    ani.Load(sheet, {3, 3});
-    ani.Play();
-    ani.Scale(10, 10);
-    ani.EnableLoop();
+    mainrole.Init();
+    mainrole.Show();
 }
 
 void GameBody::Update(){
@@ -33,7 +27,10 @@ void GameBody::Update(){
     while(!direct->IsQuit()){
         glClearColor(0.1, 0.1, 0.1, 0.1);
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+        Program::GetInstance().Use();
+        Director::GetInstance()->Update();
         while(SDL_PollEvent(&event)){
+            direct->EventHandle();
             if(event.type==SDL_QUIT)
                 direct->Exit();
             if(event.type==SDL_WINDOWEVENT){
@@ -42,8 +39,6 @@ void GameBody::Update(){
             }
             eventHandle();
         }
-        Program::GetInstance().Use();
-        Director::GetInstance()->Update();
         step();
         SDL_GL_SwapWindow(direct->GetWindow());
         SDL_Delay(1000.0/direct->fps);
@@ -54,14 +49,7 @@ void GameBody::eventHandle(){
 }
 
 void GameBody::step(){
-    ani.Update();
-    texture.Draw(100, 100);
-    for(int i=0;i<sheet.Size();i++){
-        Texture tex = sheet.Get(i, 0).Copy();
-        tex.Scale(10, 10);
-        tex.Draw(i*200, 100);
-    }       
-    ani.CurrentFrame().texture.Draw(400, 400);
+    mainrole.Update();
 }
 
 GameBody::~GameBody(){
