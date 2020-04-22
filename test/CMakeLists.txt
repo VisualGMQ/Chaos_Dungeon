@@ -1,17 +1,10 @@
-aux_source_directory(../src TEST_SRC)
-include_directories(../include)
-
 macro(AddTest testname testfile)
     add_executable(${testname} ${testfile})
     target_link_libraries(${testname} common)
 endmacro()
 
 AddTest(TestMath tmath.cpp)
-AddTest(TestTexture tTexture.cpp)
-AddTest(TestAnimation tAnimation.cpp)
 AddTest(TestOBBvsOBB tOBBvsOBB.cpp)
 AddTest(TestAABBvsAABB tAABBvsAABB.cpp)
 AddTest(TestAABBvsCircle tAABBvsCircle.cpp)
 AddTest(TestCirclevsCircle tCirclevsCircle.cpp)
-AddTest(TestImageFactory tImageFactory.cpp)
-AddTest(TestSprite tSprite.cpp)

@@ -1,5 +1,7 @@
 #include "math.hpp"
 
+Size::Size():w(0),h(0){}
+
 Vec2D::Vec2D():x(0),y(0){}
 
 Vec2D::Vec2D(float x, float y){

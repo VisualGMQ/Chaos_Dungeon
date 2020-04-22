@@ -65,18 +65,30 @@ bool Manifold::Valid() const{
 Object::Object():circle(nullptr),obb(nullptr),aabb(nullptr),type(ObjType::UNKNOWN){}
 
 Object::Object(AABB aabb):Object(){
+    Set(aabb);
+}
+
+Object::Object(OBB obb):Object(){
+    Set(obb);
+}
+
+Object::Object(Circle circle):Object(){
+    Set(circle);
+}
+
+void Object::Set(AABB aabb){
     type = ObjType::AABB;
     this->aabb = new AABB;
     *(this->aabb) = aabb;
 }
 
-Object::Object(OBB obb):Object(){
+void Object::Set(OBB obb){
     type = ObjType::OBB;
     this->obb = new OBB;
     *(this->obb) = obb;
 }
 
-Object::Object(Circle circle):Object(){
+void Object::Set(Circle circle){
     type = ObjType::CIRCLE;
     this->circle = new Circle;
     *(this->circle) = circle;

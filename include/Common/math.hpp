@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+#include "glm/glm.hpp"
 using namespace std;
 #define FLT_CMP(a, b) (abs(a-b)<=FLT_EPSILON)
 #define DEG2RAD(x) (x*M_PI/180.0)
@@ -21,6 +22,7 @@ ostream& operator<<(ostream& o, const vector<T>& v){
 struct Size{
     float w;
     float h;
+    Size();
 };
 
 class Vec2D{

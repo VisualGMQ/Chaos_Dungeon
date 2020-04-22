@@ -45,6 +45,9 @@ public:
     explicit Object(AABB aabb);
     explicit Object(OBB obb);
     explicit Object(Circle circle);
+    void Set(AABB aabb);
+    void Set(OBB obb);
+    void Set(Circle circle);
     Vec Center() const;
     ObjType GetType() const;
     Circle* GetCircle();
