@@ -61,6 +61,8 @@ void Director::SizeAdapt(int neww, int newh){
 
 void Director::Update(){
     oldkeys = keys;
+    glm::mat4 ortho = glm::ortho<float>(0, Width(), 0, Height());
+    Program::GetInstance().UniformMat4("Ortho", ortho);
 }
 
 bool Director::IsQuit() const{

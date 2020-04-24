@@ -94,6 +94,6 @@ void Animation::Update(){
     }
 }
 
-void Animation::Draw(float x, float y) {
-    CurrentFrame().texture.Draw(x, y);
+void Animation::Draw(float x, float y, float degree, FlipFlag flag) {
+    CurrentFrame().texture.Draw(x, y, degree, flag);
 }

@@ -34,6 +34,7 @@ public:
     float Len() const;
     float Cross(const Vec2D v) const;
     float Dot(const Vec2D v) const;
+    void Rotate(float degree);
     Vec2D operator=(const Vec2D v);
     Vec2D operator+(const Vec2D v);
     Vec2D operator-(const Vec2D v);
@@ -60,6 +61,7 @@ public:
 
 float Distance(Vec2D v1, Vec2D v2);
 Vec2D Normalize(Vec2D v);
+Vec2D Rotate(Vec2D v, float degree);
 
 Vec2D operator+(float n, Vec2D v);
 Vec2D operator-(float n, Vec2D v);

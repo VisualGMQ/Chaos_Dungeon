@@ -2,8 +2,9 @@
 #define MAINROLE_HPP
 #include "Sprite.hpp"
 #include "Collision.hpp"
+#include "DamageableSprite.hpp"
 
-class MainRole : public Sprite{
+class MainRole : public DamageableSprite{
 public:
     enum State{
         NO_STATE = 0x00,
@@ -18,7 +19,7 @@ private:
     void draw() override;
     void update() override;
     void scale(float sx, float sy);
-    Drawable* draw_obj;
+    Drawable* draw_ptr;
     Animation ani_walk;
     Texture tex_stand;
     State state;

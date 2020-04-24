@@ -4,11 +4,8 @@
 #include "TextureSheet.hpp"
 #include "Animation.hpp"
 #include "Director.hpp"
-#define SET_STATE(var, state) (var = state)
-#define ATTACH_STATE(var, state, type) (var = static_cast<type>(var|state))
-#define HAS_STATE(var, state) (var&state)
-#define UNSET_STATE(var, state, type) (var = static_cast<type>(var&(~state)))
-#define IS_STATE(var, state) (var==state)
+#include "Colliable.hpp"
+#include "HelpFunc.hpp"
 
 class Sprite{
 public:
@@ -18,6 +15,9 @@ public:
     void Hide(); /** @warn 隐藏精灵，必须在Update里面实现对isshow变量的反馈*/
     bool IsShow() const;
     Vec Position() const;
+    void Move(float dx, float dy);
+    void MoveTo(float x, float y);
+    Vec TopLeft() const;
     /**
      * @brief 事件处理，在这里实现你人物的事件处理
      */
@@ -33,6 +33,17 @@ protected:
     virtual void draw() = 0;
     Vec position;
     bool isshow;
+};
+
+/**
+ * @brief 可以进行碰撞检测的精灵
+ */
+class ColliableSprite : public Sprite, public Colliable{
+public:
+    void Move(float dx, float dy);
+    void MoveTo(float x, float y);
+    void update() override; 
+private:
 };
 
 #endif

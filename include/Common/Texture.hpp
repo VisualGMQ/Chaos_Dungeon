@@ -7,6 +7,7 @@
 #include "Program.hpp"
 #include "Director.hpp"
 #include "Drawable.hpp"
+#include "HelpFunc.hpp"
 #include <string>
 #include <iostream>
 using namespace std;
@@ -30,7 +31,7 @@ public:
     void Scale(float sx, float sy);
     Size Size() const;
     void Size(float w, float h);
-    void Draw(float x, float y) override;
+    void Draw(float x, float y, float degree = 0, FlipFlag flipflag = FlipFlag::NONE) override;
     ~Texture();
 private:
     void configTexture();

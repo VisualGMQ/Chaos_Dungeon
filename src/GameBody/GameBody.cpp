@@ -16,8 +16,27 @@ GameBody::GameBody(){
         cerr<<"glew init failed"<<endl;
     }
     Director::Init(window, 800, 600, 30);
+    init();
+}
+
+void GameBody::init(){
     mainrole.Init();
     mainrole.Show();
+    robo.Init();
+    robo.Show();
+    robo.Move(300, 300);
+    ColliSystem& collisystem = ColliSystem::GetInstance();
+    collisystem.AddDamageable(&mainrole);
+    collisystem.AddDamageable(&robo);
+    for(int i=0;i<6;i++){
+        Wall wall;
+        wall.Init();
+        wall.Show();
+        wall.MoveTo(300+i*wall.Width(), 400);
+        walls.push_back(std::move(wall));
+    }           
+    for(int i=0;i<walls.size();i++)
+        collisystem.AddColliable(&walls[i]);
 }
 
 void GameBody::Update(){
@@ -28,6 +47,7 @@ void GameBody::Update(){
         glClearColor(0.1, 0.1, 0.1, 0.1);
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
         Program::GetInstance().Use();
+        camera.Update();
         Director::GetInstance()->Update();
         while(SDL_PollEvent(&event)){
             direct->EventHandle();
@@ -49,7 +69,12 @@ void GameBody::eventHandle(){
 }
 
 void GameBody::step(){
+    ColliSystem::GetInstance().Update();
+    for(int i=0;i<walls.size();i++){
+        walls[i].Update();
+    }
     mainrole.Update();
+    robo.Update();
 }
 
 GameBody::~GameBody(){

@@ -20,7 +20,8 @@ public:
     bool LinkProgram(GLuint vertex, GLuint frag);
     bool UniformMat4(string name, glm::mat4 mat);
     bool UniformMat3(string name, glm::mat3 mat);
-    bool UniformInt(string name, int idx);
+    bool UniformInt(string name, int value);
+    bool UniformFloat(string name, float value);
     bool Valid() const;
     void Use();
 private:

@@ -22,6 +22,14 @@ float Vec2D::Dot(const Vec2D v) const{
     return x*v.x+y*v.y;
 }
 
+void Vec2D::Rotate(float degree){
+    float radian = DEG2RAD(degree);
+    float newx = x*cos(radian) + y*sin(radian),
+          newy = -sin(radian)*x + cos(radian)*y;
+    x = newx;
+    y = newy;
+}
+
 void Vec2D::Normalize(){
     float len = Len();
     x /= len;
@@ -145,6 +153,13 @@ Vec2D operator*(float n, Vec2D v){
 
 Vec2D operator/(float n, Vec2D v){
     return v/n;
+}
+
+Vec2D Rotate(Vec2D v, float degree){
+    float radian = DEG2RAD(degree);
+    float newx = v.x*cos(radian) + v.y*sin(radian),
+          newy = -sin(radian)*v.x + cos(radian)*v.y;
+    return Vec2D(newx, newy);
 }
 
 float Distance(Vec2D v1, Vec2D v2){

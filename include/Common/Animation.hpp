@@ -43,7 +43,7 @@ public:
     void DisableLoop();
     Frame& CurrentFrame();
     void Update();
-    void Draw(float x, float y) override;
+    void Draw(float x, float y, float degree = 0, FlipFlag flag = FlipFlag::NONE) override;
     ~Animation() = default;
 private:
     vector<Frame> frames;

@@ -98,6 +98,7 @@ Texture& Texture::operator=(const Texture& t){
     surface = t.surface;
     gainSurface();
     configTexture();
+    size = t.size;
     return *this;
 }
 
@@ -134,21 +135,39 @@ void Texture::Height(int h){
     size.h = h;
 }
 
-void Texture::Draw(float x, float y){
-    SDL_FPoint pos[4] = {
-        {x+size.w/2, y-size.h/2},
-        {x-size.w/2, y-size.h/2},
-        {x+size.w/2, y+size.h/2},
-        {x-size.w/2, y+size.h/2}
+void Texture::Draw(float x, float y, float degree, FlipFlag flipflag){
+    SDL_FPoint pos[6] = {
+        {-0.5, 0.5},
+        {0.5, 0.5},
+        {0.5, -0.5},
+        {0.5, -0.5},
+        {-0.5, -0.5},
+        {-0.5, 0.5}
     };
-    for(int i=0;i<4;i++){
-        pos[i].x = pos[i].x/Director::GetInstance()->Width() - 0.5;
-        pos[i].y = pos[i].y/Director::GetInstance()->Height() - 0.5;
+    int window_w = Director::GetInstance()->Width(),
+        window_h = Director::GetInstance()->Height();
+    glm::mat4 scale = glm::mat4(1.0);
+    scale = glm::scale(scale, glm::vec3(size.w, size.h, 1));
+    glm::mat4 rotate = glm::mat4(1.0);
+    rotate = glm::rotate<float>(rotate, DEG2RAD(degree), glm::vec3(0, 0, 1));
+    //flip image
+    if(flipflag!=FlipFlag::NONE){
+        if(HAS_STATE(flipflag, FlipFlag::VERTICAL))
+            rotate = glm::rotate<float>(rotate, DEG2RAD(180.0), glm::vec3(0, 1, 0));
+        if(HAS_STATE(flipflag, FlipFlag::HORIZENTAL))
+            rotate = glm::rotate<float>(rotate, DEG2RAD(180.0), glm::vec3(1, 0, 0));
     }
-    float texcoord[8] = {
+    glm::mat4 translate = glm::mat4(1.0);
+    translate = glm::translate(translate, glm::vec3(x, y, 0));
+    Program::GetInstance().UniformMat4("Rotate", rotate);
+    Program::GetInstance().UniformMat4("Scale", scale);
+    Program::GetInstance().UniformMat4("Translate", translate);
+    float texcoord[] = {
+        0, 0,
+        1, 0,
+        1, 1,
         1, 1,
         0, 1,
-        1, 0,
         0, 0
     };
     GLuint VBO, TBO, EBO;
@@ -167,16 +186,23 @@ void Texture::Draw(float x, float y){
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float)*2, (void*)0);
     glEnableVertexAttribArray(1);
 
-    int indices[6] = {0, 1, 2,
-        1, 2, 3};
+    /*`
+    int indices[6] = {
+        0, 1, 2,
+        0, 1, 3
+    };
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     glBindTexture(GL_TEXTURE_2D, texid);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    */
+    glBindTexture(GL_TEXTURE_2D, texid);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
+    glDeleteBuffers(1, &TBO);
     glDeleteVertexArrays(1, &VAO);
 }
 

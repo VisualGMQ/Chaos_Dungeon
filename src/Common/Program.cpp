@@ -84,7 +84,7 @@ bool Program::UniformMat4(string name, glm::mat4 mat){
         cerr<<name<<" uniform not fount"<<endl;
         return false;
     }
-    glUniform4fv(loc, 1, glm::value_ptr(mat));
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
     return true;
 }
 
@@ -94,17 +94,27 @@ bool Program::UniformMat3(string name, glm::mat3 mat){
         cerr<<name<<" uniform not fount"<<endl;
         return false;
     }
-    glUniform3fv(loc, 1, glm::value_ptr(mat));
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
     return true;
 }
 
-bool Program::UniformInt(string name, int idx){
+bool Program::UniformInt(string name, int value){
     GLint loc = glGetUniformLocation(prog, name.c_str());
     if(loc==-1){
         cerr<<name<<" uniform not fount"<<endl;
         return false;
     }
-    glUniform1i(loc, idx);
+    glUniform1i(loc, value);
+    return true;
+}
+
+bool Program::UniformFloat(string name, float value){
+    GLint loc = glGetUniformLocation(prog, name.c_str());
+    if(loc==-1){
+        cerr<<name<<" uniform not fount"<<endl;
+        return false;
+    }
+    glUniform1f(loc, value);
     return true;
 }
 

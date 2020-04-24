@@ -8,6 +8,12 @@
 #include "Director.hpp"
 #include "Program.hpp"
 #include "Sprite/MainRole.hpp"
+#include "Sprite/Wall.hpp"
+#include "Sprite/LittleRobo.hpp"
+#include "ColliSystem.hpp"
+#include "math.hpp"
+#include "Camera.hpp"
+#include <vector>
 #include <iostream>
 #include <map>
 using namespace std;
@@ -18,10 +24,14 @@ public:
     void Update();
     ~GameBody();
 protected:
+    void init();
     void eventHandle();
     void step();
     map<SDL_Keysym, bool> keys;
     MainRole mainrole;
+    vector<Wall> walls;
+    LittleRobo robo;
+    Camera camera;
 };
 
 #endif
