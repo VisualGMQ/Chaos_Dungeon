@@ -6,6 +6,13 @@ void Director::Init(SDL_Window* window, int w, int h, int fps){
     if(director)
         delete director;
     director = new Director(window, w, h, fps);
+    director->mousepos.x = 0;
+    director->mousepos.y = 0;
+    director->mousekeys[SDL_BUTTON_LEFT] = false;
+    director->mousekeys[SDL_BUTTON_RIGHT] = false;
+    director->mousekeys[SDL_BUTTON_MIDDLE] = false;
+    director->mousekeys[SDL_BUTTON_X1] = false;
+    director->mousekeys[SDL_BUTTON_X2] = false;
 }
 
 void Director::Quit(){
@@ -24,12 +31,23 @@ SDL_Event& Director::GetEvent(){
     return event;
 }
 
+Vec Director::GetMousePos() const{
+    return mousepos;
+}
+
 void Director::EventHandle(){
     if(event.type==SDL_KEYDOWN){
         keys[event.key.keysym.sym] = true;
     }
     if(event.type==SDL_KEYUP)
         keys[event.key.keysym.sym] = false;
+    if(event.type==SDL_MOUSEMOTION){
+        mousepos.Set(event.motion.x, Director::GetInstance()->Height()-event.motion.y);
+    }
+    if(event.type==SDL_MOUSEBUTTONDOWN)
+        mousekeys[event.button.button] = true;
+    if(event.type==SDL_MOUSEBUTTONUP)
+        mousekeys[event.button.button] = false;
 }
 
 KeyState Director::KeyState(SDL_Keycode keycode){
@@ -47,6 +65,20 @@ KeyState Director::KeyState(SDL_Keycode keycode){
     }
 }
 
+KeyState Director::MouseButtonState(Uint8 button){
+    if(oldmousekeys[button]){
+        if(mousekeys[button])
+            return PRESSING;
+        else
+            return RELEASED;
+    }else{
+        if(mousekeys[button])
+            return PRESSED;
+        else
+            return RELEASING;
+    }
+}
+
 int Director::Width() const{
     return width;
 }
@@ -61,6 +93,7 @@ void Director::SizeAdapt(int neww, int newh){
 
 void Director::Update(){
     oldkeys = keys;
+    oldmousekeys = mousekeys;
     glm::mat4 ortho = glm::ortho<float>(0, Width(), 0, Height());
     Program::GetInstance().UniformMat4("Ortho", ortho);
 }

@@ -28,26 +28,18 @@ class WorldModel{
 public:
     static WorldModel* GetInstance();
     static void Destroy();
-    void Init();
-    void AddColliable(ColliableSprite* sp);
-    void AddDmgable(DamageableSprite* sp);
-    void AddSprite(Sprite* sp);
-    void ClearColliable();
-    void ClearDmgable();
-    void ClearSprite();
-    void DeleteElem(unsigned int id);
-    void Clear();
+    static void Clear();
+    void AddGameObject(GameObject* obj);
+    static void DeleteElem(unsigned int id);
     MainRole* GetMainRole();
-    void EventHandle(SDL_Event& event);
     void Update();
     ~WorldModel();
 private:
-    void realDelete();
+    void junkRecycle();
     static list<unsigned int> willdel_list;
     static WorldModel* instance;
-    list<ColliableSprite*> colliSp;
-    list<DamageableSprite*> dmgSp;
-    list<Sprite*> sprites;
+    static bool clear_all;
+    list<GameObject*> objects;
     MainRole* role;
 };
 

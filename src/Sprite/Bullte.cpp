@@ -1,7 +1,10 @@
 #include "Sprite/Bullet.hpp"
 
-list<Bullet*> Bullet::instances;
-list<unsigned int> Bullet::willdel_list;
+Bullet* Bullet::Create(){
+    auto* b = new Bullet;
+    b->Init();
+    return b;
+}
 
 Bullet::Bullet():isalive(true){
     colliobj.SetColliType(ColliType::BULLETABLE);
@@ -20,8 +23,6 @@ void Bullet::SetShootVel(Vec pos, Vec vel){
     MoveTo(pos.x, pos.y);
     colliobj.physic_info.v = vel;
 }
-
-void Bullet::EventHandle(SDL_Event& event) {}
 
 void Bullet::update() {
     DamageableSprite::update();

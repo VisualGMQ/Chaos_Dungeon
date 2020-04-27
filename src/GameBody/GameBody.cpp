@@ -17,20 +17,21 @@ GameBody::GameBody(){
         cerr<<"glew init failed"<<endl;
     }
     Director::Init(window, WindowWidth, WindowHeight, 30);
-    WorldModel::GetInstance()->Init();
     init();
 }
 
 void GameBody::init(){
     WorldModel* wm = WorldModel::GetInstance();
+    wm->AddGameObject(MainRole::Create());
+    for(int i=0;i<5;i++) {
+        Wall* w = Wall::Create();
+        w->MoveTo(i*w->Width(), w->Height());
+        wm->AddGameObject(w);
+    }
     LittleRobo* robo = LittleRobo::Create();
-    robo->Show();
-    robo->MoveTo(300, 300);
-    wm->AddDmgable(robo);
-    Wall* wall = Wall::Create();
-    wall->Show();
-    wall->MoveTo(400, 400);
-    wm->AddColliable(wall);
+    robo->Init();
+    robo->MoveTo(500, 500);
+    wm->AddGameObject(robo);
 }
 
 void GameBody::Update(){
@@ -51,7 +52,6 @@ void GameBody::Update(){
                 if(event.window.event==SDL_WINDOWEVENT_RESIZED)
                     Director::GetInstance()->SizeAdapt(event.window.data1, event.window.data2);
             }
-            WorldModel::GetInstance()->EventHandle(event);
         }
         step();
         SDL_GL_SwapWindow(direct->GetWindow());
@@ -62,12 +62,15 @@ void GameBody::Update(){
 void GameBody::step(){
     ColliSystem::GetInstance()->Update();
     WorldModel::GetInstance()->Update();
+    ObjJunkRecycle();
 }
 
 GameBody::~GameBody(){
     Director::Quit();
     WorldModel::Destroy();
     Camera::Destroy();
+    GameObject::ClearAllObject();
+    ObjJunkRecycle();
     SDL_Quit();
     TTF_Quit();
     IMG_Quit();

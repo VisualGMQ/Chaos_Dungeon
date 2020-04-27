@@ -11,6 +11,7 @@ public:
     BasicProp prop;
 protected:
     DamageableSprite(){
+        name = "DamageableSprite";
         colliobj.AttachColliType(ColliType::DAMAGEABLE);
     }
 };

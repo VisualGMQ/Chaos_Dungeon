@@ -27,7 +27,9 @@ public:
     int Height() const;
     void EventHandle();
     void SizeAdapt(int neww, int newh);
-    KeyState KeyState(SDL_Keycode keycode);
+    enum KeyState KeyState(SDL_Keycode keycode);
+    enum KeyState MouseButtonState(Uint8 button);
+    Vec GetMousePos() const;
     void Exit();
     void Update();
     bool IsQuit() const;
@@ -40,7 +42,9 @@ private:
     int height;
     map<SDL_Keycode, bool> keys;
     map<SDL_Keycode, bool> oldkeys;
-    
+    map<Uint8, bool> mousekeys;
+    map<Uint8, bool> oldmousekeys;
+    Vec mousepos;
     bool isquit;
     Director(SDL_Window* window, int w, int h, int fps);
 };

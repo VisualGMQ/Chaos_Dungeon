@@ -4,18 +4,17 @@
 #include "Collision.hpp"
 #include "Colliable.hpp"
 #include "ColliSystem.hpp"
+#include "Texture.hpp"
 
 class Wall : public ColliableSprite{
-    DEFINE_DELETEINTERFACE(Wall)
-    DEFINE_DELETEBODY(Wall)
 public:
+    static Wall* Create();
     void Init() override;
     int Width() const;
     int Height() const;
-    void EventHandle(SDL_Event& event) override;
     ~Wall();
 private:
-    Wall() = default;
+    Wall();
     Vec topleft() const;
     void update() override;
     void draw() override;

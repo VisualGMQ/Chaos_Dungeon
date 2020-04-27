@@ -1,15 +1,15 @@
 #ifndef LITTLE_ROBO
 #define LITTLE_ROBO
 #include "Sprite.hpp"
+#include "Drawable.hpp"
 #include "DamageableSprite.hpp"
 #include "ColliSystem.hpp"
+#include "Animation.hpp"
 
-class LittleRobo : public DamageableSprite{
-    DEFINE_DELETEINTERFACE(LittleRobo)
-    DEFINE_DELETEBODY(LittleRobo)
+class LittleRobo final : public DamageableSprite{
 public:
+    static LittleRobo* Create();
     void Init() override;
-    void EventHandle(SDL_Event& event) override;
     ~LittleRobo();
 private:
     LittleRobo();

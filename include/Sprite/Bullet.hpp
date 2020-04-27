@@ -3,12 +3,10 @@
 #include "Sprite/DamageableSprite.hpp"
 #include "WorldModel.hpp"
 
-class Bullet : public DamageableSprite{
-    DEFINE_DELETEINTERFACE(Bullet)
-    DEFINE_DELETEBODY(Bullet)
+class Bullet final : public DamageableSprite{
 public:
+    static Bullet* Create();
     void Init() override;
-    void EventHandle(SDL_Event& event) override;
     void SetShootVel(Vec pos, Vec vel);
 private:
     Bullet();

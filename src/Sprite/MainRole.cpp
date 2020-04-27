@@ -1,40 +1,55 @@
 #include "Sprite/MainRole.hpp"
 
-list<MainRole*> MainRole::instances;
-list<unsigned int> MainRole::willdel_list;
+Direction::Direction():vertical(1),horizontal(0){}
+
+void Direction::Up(){
+    if(vertical!=1)
+        vertical++;
+}
+
+void Direction::Down(){
+    if(vertical!=-1)
+        vertical--;
+}
+
+void Direction::Left(){
+    if(horizontal!=-1)
+        horizontal--;
+}
+
+void Direction::Right(){
+    if(horizontal!=1)
+        horizontal++;
+}
+
+MainRole* MainRole::Create(){
+    auto* m = new MainRole;
+    m->Init();
+    return m;
+}
 
 MainRole::MainRole():state(MainRole::State::STAND),draw_ptr(&tex_stand){
+    name = "MainRole";
 }
 
 void MainRole::Init() {
     tex_stand.Load("resources/mainrole_stand.png");
-    tex_stand.Scale(5, 5);
+    tex_stand.Scale(3, 3);
     TextureSheet ts("resources/mainrole_walk.png", 2, 1);
     ani_walk.Load(ts, {4, 4});
-    ani_walk.Scale(5, 5);
+    ani_walk.Scale(3, 3);
     colliobj.Set(AABB(Position().x-tex_stand.Width()/2, Position().y-tex_stand.Height()/2, tex_stand.Width(), tex_stand.Height()));
     colliobj.AttachColliType(ColliType::SOLIDABLE);
     colliobj.AttachLayer(ColliLayer::PLAYER);
     prop.hp = 3;
     prop.damage = 0;
-    Shoot(Vec(5, 5));
     ColliSystem::GetInstance()->AddDamageable(this);
 }
-
-void MainRole::Shoot(Vec dir){
-    Bullet* b = Bullet::Create();
-    b->prop.damage = 1;
-    b->SetShootVel(Vec(100, 100), dir);
-    b->Show();
-    b->GetColliObject().AttachLayer(ColliLayer::PLAYER);
-    WorldModel::GetInstance()->AddDmgable(b);
-}
-
-void MainRole::EventHandle(SDL_Event& event) {}
 
 void MainRole::update() {
     DamageableSprite::update();
     Director* director = Director::GetInstance();
+    aim_dir = Director::GetInstance()->GetMousePos()-Position();
     const float speed = 10;
     colliobj.physic_info.v.Set(0, 0);
     SET_STATE(state, State::STAND);
@@ -62,8 +77,18 @@ void MainRole::update() {
         ani_walk.Stop();
         draw_ptr = &tex_stand;
     }       
+    if(director->MouseButtonState(SDL_BUTTON_LEFT)==KeyState::PRESSED)
+        shoot();
     colliobj.Update(1.0/Director::GetInstance()->fps);
     ani_walk.Update();
+}
+
+void MainRole::shoot(){
+    Bullet* b = Bullet::Create();
+    b->GetColliObject().AttachLayer(ColliLayer::PLAYER);
+    const int bullet_speed = 20;
+    b->SetShootVel(Position(), Normalize(aim_dir)*bullet_speed);
+    WorldModel::GetInstance()->AddGameObject(b);
 }
 
 void MainRole::draw() {

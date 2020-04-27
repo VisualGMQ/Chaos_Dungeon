@@ -2,119 +2,59 @@
 
 WorldModel* WorldModel::instance = nullptr;
 list<unsigned int> WorldModel::willdel_list;
+bool WorldModel::clear_all = false;
 
 WorldModel* WorldModel::GetInstance(){
     if(!instance){
         instance = new WorldModel;
-        instance->Init();
     }
     return instance;
 }
 
 void WorldModel::Destroy(){
-    if(instance)
-        delete instance;
+    delete instance;
 }
 
-void WorldModel::Init(){
-    role = MainRole::Create();
-    role->MoveTo(350, 350);
-    role->Show();
-}
-
-void WorldModel::AddColliable(ColliableSprite* sp){
-    colliSp.push_back(sp);
-}
-
-void WorldModel::AddDmgable(DamageableSprite* sp){
-    dmgSp.push_back(sp);
-}
-
-void WorldModel::AddSprite(Sprite* sp){
-    sprites.push_back(sp);
-}
-
-void WorldModel::ClearColliable(){
-    while(!colliSp.empty()){
-        ColliableSprite* sp = colliSp.back();
-        sp->DeleteSelf();
-        colliSp.pop_back();
-    }   
-}
-
-void WorldModel::ClearDmgable(){
-    while(!dmgSp.empty()){
-        dmgSp.back()->DeleteSelf();
-        dmgSp.pop_back();
-    }
-}
-
-void WorldModel::ClearSprite(){
-    while(!sprites.empty()){
-        sprites.back()->DeleteSelf();
-        sprites.pop_back();
-    }
+void WorldModel::AddGameObject(GameObject* obj){
+    objects.push_back(obj);
 }
 
 void WorldModel::Clear(){
-    ClearSprite();
-    ClearDmgable();
-    ClearColliable();
+    clear_all = true; 
 }
 
 void WorldModel::DeleteElem(unsigned int id){
     willdel_list.push_back(id);
 }
 
-void WorldModel::EventHandle(SDL_Event& event){
-    for(auto i=colliSp.begin();i!=colliSp.end();i++)
-        (*i)->EventHandle(event);
-    for(auto i=sprites.begin();i!=sprites.end();i++)
-        (*i)->EventHandle(event);
-    for(auto i=dmgSp.begin();i!=dmgSp.end();i++)
-        (*i)->EventHandle(event);
-    role->EventHandle(event);
-}
-
 void WorldModel::Update(){
-    Bullet::Delete();
-    MainRole::Delete();
-    LittleRobo::Delete();
-    for(auto i=colliSp.begin();i!=colliSp.end();i++)
-        (*i)->Update();
-    for(auto i=sprites.begin();i!=sprites.end();i++)
-        (*i)->Update();
-    for(auto i=dmgSp.begin();i!=dmgSp.end();i++)
-        (*i)->Update();
-    role->Update();
-    realDelete();
+    junkRecycle();
+    for(auto & object : objects)
+        object->Update();
 }
 
-void WorldModel::realDelete(){
-    while(!willdel_list.empty()){
-        unsigned int id = willdel_list.back();
-        willdel_list.pop_back();
-        for(auto i=colliSp.begin();i!=colliSp.end();i++)
-            if((*i)->GetID()==id){
-                colliSp.erase(i);
-                break;
+void WorldModel::junkRecycle(){
+    if(clear_all){
+        while(!objects.empty()){
+            objects.back()->DeleteSelf();
+            objects.pop_back();
+        }
+        clear_all = false;
+    }else{
+        while(!willdel_list.empty()){
+            IDType id = willdel_list.back();
+            willdel_list.pop_back();
+            for(auto i=objects.begin();i!=objects.end();i++){
+                if((*i)->GetID()==id){
+                    (*i)->DeleteSelf();
+                    objects.erase(i);
+                    break;
+                }
             }
-        for(auto i=sprites.begin();i!=sprites.end();i++)
-            if((*i)->GetID()==id){
-                sprites.erase(i);
-                break;
-            }
-        for(auto i=dmgSp.begin();i!=dmgSp.end();i++)
-            if((*i)->GetID()==id){
-                dmgSp.erase(i);
-                break;
-            }
+        }
     }
 }
 
 WorldModel::~WorldModel(){
-    ClearColliable();
-    ClearSprite();
-    ClearDmgable();
-    role->DeleteSelf();
+    Clear();
 }
