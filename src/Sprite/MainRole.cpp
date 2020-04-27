@@ -1,5 +1,8 @@
 #include "Sprite/MainRole.hpp"
 
+list<MainRole*> MainRole::instances;
+list<unsigned int> MainRole::willdel_list;
+
 MainRole::MainRole():state(MainRole::State::STAND),draw_ptr(&tex_stand){
 }
 
@@ -10,14 +13,27 @@ void MainRole::Init() {
     ani_walk.Load(ts, {4, 4});
     ani_walk.Scale(5, 5);
     colliobj.Set(AABB(Position().x-tex_stand.Width()/2, Position().y-tex_stand.Height()/2, tex_stand.Width(), tex_stand.Height()));
-    colliobj.AttachColliType(ColliType::SOLID);
+    colliobj.AttachColliType(ColliType::SOLIDABLE);
     colliobj.AttachLayer(ColliLayer::PLAYER);
+    prop.hp = 3;
+    prop.damage = 0;
+    Shoot(Vec(5, 5));
+    ColliSystem::GetInstance()->AddDamageable(this);
+}
+
+void MainRole::Shoot(Vec dir){
+    Bullet* b = Bullet::Create();
+    b->prop.damage = 1;
+    b->SetShootVel(Vec(100, 100), dir);
+    b->Show();
+    b->GetColliObject().AttachLayer(ColliLayer::PLAYER);
+    WorldModel::GetInstance()->AddDmgable(b);
 }
 
 void MainRole::EventHandle(SDL_Event& event) {}
 
 void MainRole::update() {
-    ColliableSprite::update();
+    DamageableSprite::update();
     Director* director = Director::GetInstance();
     const float speed = 10;
     colliobj.physic_info.v.Set(0, 0);
@@ -52,4 +68,8 @@ void MainRole::update() {
 
 void MainRole::draw() {
     draw_ptr->Draw(Position().x, Position().y);
+}
+
+MainRole::~MainRole(){
+    ColliSystem::GetInstance()->DeleteElem(GetID());
 }

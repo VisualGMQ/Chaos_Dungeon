@@ -2,13 +2,17 @@
 #define LITTLE_ROBO
 #include "Sprite.hpp"
 #include "DamageableSprite.hpp"
+#include "ColliSystem.hpp"
 
 class LittleRobo : public DamageableSprite{
+    DEFINE_DELETEINTERFACE(LittleRobo)
+    DEFINE_DELETEBODY(LittleRobo)
 public:
-    LittleRobo();
     void Init() override;
     void EventHandle(SDL_Event& event) override;
+    ~LittleRobo();
 private:
+    LittleRobo();
     void update() override;
     void draw() override;
     Drawable* draw_ptr;

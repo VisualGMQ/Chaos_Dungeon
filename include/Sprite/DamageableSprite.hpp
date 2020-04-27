@@ -8,10 +8,11 @@
  */
 class DamageableSprite : public ColliableSprite{
 public:
+    BasicProp prop;
+protected:
     DamageableSprite(){
         colliobj.AttachColliType(ColliType::DAMAGEABLE);
     }
-    BasicProp prop;
 };
 
 #endif

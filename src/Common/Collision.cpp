@@ -376,7 +376,7 @@ bool CirclevsAABB(Manifold& m){
     Manifold newm;
     newm.o1 = m.o2;
     newm.o2 = m.o1;
-    bool ret = AABBvsCircle(m);
+    bool ret = AABBvsCircle(newm);
     if(!ret)
         return false;
     m.deepth = newm.deepth;
@@ -466,6 +466,9 @@ static colliCallBack collitable[4][4] = {
 };
 
 bool Collision(Object* obj1, Object* obj2, Manifold& m){
+    //具有相同层的物体不应当碰撞
+    if(obj1->GetLayer()&obj2->GetLayer())
+        return false;
     int type1 = static_cast<int>(obj1->GetType()),
         type2 = static_cast<int>(obj2->GetType());
     bool ret = false;
@@ -483,17 +486,28 @@ bool Collision(Object* obj1, Object* obj2, Manifold& m){
 
 void ColliDealFunc(Manifold& m, BasicProp* prop1, BasicProp* prop2){
     Vec v_o1o2 = m.o2->Center()-m.o1->Center();
-    if(HAS_STATE(m.o1->GetColliType(), ColliType::SOLID)&&HAS_STATE(m.o2->GetColliType(), ColliType::SOLID)){
+    //如果双方都是SOLIDABLE，那么应当碰撞后分离
+    if(HAS_STATE(m.o1->GetColliType(), ColliType::SOLIDABLE)&&HAS_STATE(m.o2->GetColliType(), ColliType::SOLIDABLE)){
         char sign = v_o1o2.Dot(m.dir)>=0?-1:1;
         if(m.o1->physic_info.m!=0)
             m.o1->Move(sign*m.deepth*m.dir.x, sign*m.deepth*m.dir.y);
         if(m.o2->physic_info.m!=0)
             m.o2->Move(-sign*m.deepth*m.dir.x, -sign*m.deepth*m.dir.y);
     }
-    if(prop1 && HAS_STATE(m.o1->GetColliType(), ColliType::DAMAGEABLE)){
+
+    //DAMAGEABLE在碰撞之后生命值会减去对方的伤害值
+    if(prop1 && prop2 && HAS_STATE(m.o1->GetColliType(), ColliType::DAMAGEABLE)){
         prop1->hp -= prop2->damage;
     }
-    if(prop2 && HAS_STATE(m.o2->GetColliType(), ColliType::DAMAGEABLE)){
+    if(prop2 && prop2 && HAS_STATE(m.o2->GetColliType(), ColliType::DAMAGEABLE)){
         prop2->hp -= prop1->damage;
+    }
+
+    //BULLETABLE在碰撞之后会将自己的生命值减1
+    if(prop1 && HAS_STATE(m.o1->GetColliType(), ColliType::BULLETABLE)){
+        prop1->hp--;
+    }
+    if(prop2 && HAS_STATE(m.o2->GetColliType(), ColliType::BULLETABLE)){
+        prop2->hp--;
     }
 }

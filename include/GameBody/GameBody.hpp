@@ -13,6 +13,7 @@
 #include "ColliSystem.hpp"
 #include "math.hpp"
 #include "Camera.hpp"
+#include "Sprite/WorldModel.hpp"
 #include <vector>
 #include <iostream>
 #include <map>
@@ -25,13 +26,8 @@ public:
     ~GameBody();
 protected:
     void init();
-    void eventHandle();
     void step();
     map<SDL_Keysym, bool> keys;
-    MainRole mainrole;
-    vector<Wall> walls;
-    LittleRobo robo;
-    Camera camera;
 };
 
 #endif

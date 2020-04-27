@@ -7,7 +7,8 @@ GameBody::GameBody(){
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     IMG_Init(IMG_INIT_JPG|IMG_INIT_PNG);
     TTF_Init();
-    SDL_Window* window = SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE);
+    const int WindowWidth = 1200, WindowHeight = 800;
+    SDL_Window* window = SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WindowWidth, WindowHeight, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE);
     if(!window){
         cerr<<"window can't create"<<endl;
     }
@@ -15,28 +16,21 @@ GameBody::GameBody(){
     if(glewInit()!=GLEW_OK){
         cerr<<"glew init failed"<<endl;
     }
-    Director::Init(window, 800, 600, 30);
+    Director::Init(window, WindowWidth, WindowHeight, 30);
+    WorldModel::GetInstance()->Init();
     init();
 }
 
 void GameBody::init(){
-    mainrole.Init();
-    mainrole.Show();
-    robo.Init();
-    robo.Show();
-    robo.Move(300, 300);
-    ColliSystem& collisystem = ColliSystem::GetInstance();
-    collisystem.AddDamageable(&mainrole);
-    collisystem.AddDamageable(&robo);
-    for(int i=0;i<6;i++){
-        Wall wall;
-        wall.Init();
-        wall.Show();
-        wall.MoveTo(300+i*wall.Width(), 400);
-        walls.push_back(std::move(wall));
-    }           
-    for(int i=0;i<walls.size();i++)
-        collisystem.AddColliable(&walls[i]);
+    WorldModel* wm = WorldModel::GetInstance();
+    LittleRobo* robo = LittleRobo::Create();
+    robo->Show();
+    robo->MoveTo(300, 300);
+    wm->AddDmgable(robo);
+    Wall* wall = Wall::Create();
+    wall->Show();
+    wall->MoveTo(400, 400);
+    wm->AddColliable(wall);
 }
 
 void GameBody::Update(){
@@ -47,7 +41,7 @@ void GameBody::Update(){
         glClearColor(0.1, 0.1, 0.1, 0.1);
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
         Program::GetInstance().Use();
-        camera.Update();
+        Camera::GetInstance()->Update();
         Director::GetInstance()->Update();
         while(SDL_PollEvent(&event)){
             direct->EventHandle();
@@ -57,7 +51,7 @@ void GameBody::Update(){
                 if(event.window.event==SDL_WINDOWEVENT_RESIZED)
                     Director::GetInstance()->SizeAdapt(event.window.data1, event.window.data2);
             }
-            eventHandle();
+            WorldModel::GetInstance()->EventHandle(event);
         }
         step();
         SDL_GL_SwapWindow(direct->GetWindow());
@@ -65,20 +59,15 @@ void GameBody::Update(){
     }
 }
 
-void GameBody::eventHandle(){
-}
-
 void GameBody::step(){
-    ColliSystem::GetInstance().Update();
-    for(int i=0;i<walls.size();i++){
-        walls[i].Update();
-    }
-    mainrole.Update();
-    robo.Update();
+    ColliSystem::GetInstance()->Update();
+    WorldModel::GetInstance()->Update();
 }
 
 GameBody::~GameBody(){
     Director::Quit();
+    WorldModel::Destroy();
+    Camera::Destroy();
     SDL_Quit();
     TTF_Quit();
     IMG_Quit();

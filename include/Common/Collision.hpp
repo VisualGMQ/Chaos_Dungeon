@@ -46,8 +46,11 @@ enum class ObjType{
 
 enum ColliType{
     COLLI_TYPE_UNKNOWN = 0x00,
-    SOLID = 0x01, /** 物体不可穿过 */
-    DAMAGEABLE = 0x02   /** 物体可以给与和接受伤害 */
+    SOLIDABLE = 0x01, /** 物体不可穿过 */
+    DAMAGEABLE = 0x02,   /** 物体可以给与和接受伤害 */
+    FORCEABLE = 0x04,    /** 物体在碰撞之后会根据自身速度和质量给另一个物体一个冲量 */
+    INDESTRUCTIBLE = 0x08, /** 不可被摧毁的，这种物体在碰撞之后不会由于生命值为0而被销毁 */
+    BULLETABLE = 0x10 /** 物体是子弹，子弹在每次碰撞之后都会将自己的生命值减1 */
 };
 
 struct PhysicInfo{

@@ -1,6 +1,8 @@
 #include "Sprite/Sprite.hpp"
 
-Sprite::Sprite():isshow(false){}
+unsigned int Sprite::Current_ID = 0;
+
+Sprite::Sprite():isshow(false),id(Current_ID++){}
 
 void Sprite::Show(){
     isshow = true;
@@ -33,8 +35,16 @@ void Sprite::Update(){
         draw();
 }
 
+unsigned int Sprite::GetID() const{
+    return id;
+}
+
 void ColliableSprite::Move(float dx, float dy){
     colliobj.Move(dx, dy);
+}
+
+Vec ColliableSprite::Position() const {
+    return colliobj.Center();
 }
 
 void ColliableSprite::MoveTo(float x, float y){
@@ -43,4 +53,21 @@ void ColliableSprite::MoveTo(float x, float y){
 
 void ColliableSprite::update() {
     position = colliobj.Center();
+}
+
+list<unsigned int> StaticSprite::willdel_list;
+list<StaticSprite*> StaticSprite::instances;
+
+void StaticSprite::Init() {}
+
+void StaticSprite::Load(string filename){
+    texture.Load(filename);
+}
+
+void StaticSprite::EventHandle(SDL_Event& event) {}
+
+void StaticSprite::update() {}
+
+void StaticSprite::draw() {
+    texture.Draw(Position().x, Position().y);
 }

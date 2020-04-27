@@ -1,5 +1,19 @@
 #include "Camera.hpp"
 
+Camera* Camera::camera = nullptr;
+
+Camera* Camera::GetInstance(){
+    if(!camera){
+        camera = new Camera();
+    }
+    return camera;
+}
+
+void Camera::Destroy(){
+    if(camera)
+        delete camera;
+}
+
 void Camera::Move(float dx, float dy){
     position.x += dx;
     position.y += dy;

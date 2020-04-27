@@ -6,18 +6,22 @@
 #include <vector>
 using namespace std;
 
+class DamageableSprite;
+class ColliableSprite;
+
 class ColliSystem{
 public:
-    static ColliSystem& GetInstance();
+    static ColliSystem* GetInstance();
     ColliSystem() = default;
     void Clear();
     void ClearColliable();
     void ClearDamageable();
+    void DeleteElem(unsigned int id);
     void AddColliable(ColliableSprite* cs);
     void AddDamageable(DamageableSprite* ds);
     void Update();  /** 处理碰撞检测 */
 private:
-    static ColliSystem instance;
+    static ColliSystem* instance;
     vector<DamageableSprite*> dmgSprites;
     vector<ColliableSprite*> colliSprites;
 };

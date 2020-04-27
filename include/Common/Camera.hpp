@@ -4,11 +4,14 @@
 
 class Camera{
 public:
-    Camera() = default;
+    static Camera* GetInstance();
+    static void Destroy();
     void Move(float dx, float dy);
     void MoveTo(float x, float y);
     void Update();
 private:
+    Camera() = default;
+    static Camera* camera;
     Vec position;
 };
 

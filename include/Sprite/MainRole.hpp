@@ -3,8 +3,13 @@
 #include "Sprite.hpp"
 #include "Collision.hpp"
 #include "DamageableSprite.hpp"
+#include "ColliSystem.hpp"
+#include "Bullet.hpp"
+using namespace std;
 
 class MainRole : public DamageableSprite{
+    DEFINE_DELETEINTERFACE(MainRole)
+    DEFINE_DELETEBODY(MainRole)
 public:
     enum State{
         NO_STATE = 0x00,
@@ -12,9 +17,12 @@ public:
         STAND = 0x02,
         ATTACK = 0x04
     };
-    MainRole();
     void Init() override;
     void EventHandle(SDL_Event& event) override;
+    void Shoot(Vec dir);
+    ~MainRole();
+protected:
+    MainRole();
 private:
     void draw() override;
     void update() override;
