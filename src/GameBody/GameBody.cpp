@@ -22,11 +22,36 @@ GameBody::GameBody(){
 
 void GameBody::init(){
     WorldModel* wm = WorldModel::GetInstance();
-    wm->AddGameObject(MainRole::Create());
-    for(int i=0;i<5;i++) {
+    Director* director = Director::GetInstance();
+    MainRole* mainrole = MainRole::Create();
+    mainrole->MoveTo(director->Width()/2, 100);
+    wm->AddGameObject(mainrole);
+    int col = director->Width()/32*3,
+        row = director->Height()/32*3;
+    for(int i=0;i<col;i++) {
         Wall* w = Wall::Create();
-        w->MoveTo(i*w->Width(), w->Height());
+        w->MoveTo(i*w->Width(), 0);
         wm->AddGameObject(w);
+        Wall* w2 = Wall::Create();
+        w2->MoveTo(i*w2->Width(), director->Height()-w->Height()); 
+        wm->AddGameObject(w2);
+    }
+    for(int i=1;i<row-1;i++){
+        if(i!=5){
+            Wall* w = Wall::Create();
+            w->MoveTo(0, i*w->Height());
+            wm->AddGameObject(w);
+            Wall* w2 = Wall::Create();
+            w2->MoveTo(director->Width()-w2->Width(), i*w->Height()); 
+            wm->AddGameObject(w2);
+        }else{
+            Door* door = Door::Create();
+            door->MoveTo(0,i*door->Height());
+            wm->AddGameObject(door);
+            door = Door::Create();
+            door->MoveTo(director->Width()-door->Width(),i*door->Height());
+            wm->AddGameObject(door);
+        }
     }
     LittleRobo* robo = LittleRobo::Create();
     robo->Init();
@@ -49,8 +74,9 @@ void GameBody::Update(){
             if(event.type==SDL_QUIT)
                 direct->Exit();
             if(event.type==SDL_WINDOWEVENT){
-                if(event.window.event==SDL_WINDOWEVENT_RESIZED)
-                    Director::GetInstance()->SizeAdapt(event.window.data1, event.window.data2);
+                if(event.window.event==SDL_WINDOWEVENT_RESIZED){
+                    direct->SizeAdapt(event.window.data1, event.window.data2);
+                }
             }
         }
         step();
@@ -60,9 +86,9 @@ void GameBody::Update(){
 }
 
 void GameBody::step(){
-    ColliSystem::GetInstance()->Update();
     WorldModel::GetInstance()->Update();
     ObjJunkRecycle();
+    ColliSystem::GetInstance()->Update();
 }
 
 GameBody::~GameBody(){

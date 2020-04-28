@@ -12,6 +12,7 @@ public:
     BasicProp();
     int hp;
     int damage;
+    bool can_damage;
 };
 
 #endif

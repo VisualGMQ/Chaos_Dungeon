@@ -81,6 +81,8 @@ void MainRole::update() {
         shoot();
     colliobj.Update(1.0/Director::GetInstance()->fps);
     ani_walk.Update();
+    if(prop.hp<=0)
+        Hide();
 }
 
 void MainRole::shoot(){

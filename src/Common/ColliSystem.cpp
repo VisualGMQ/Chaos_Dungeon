@@ -22,16 +22,26 @@ void ColliSystem::ClearDamageable(){
 }
 
 void ColliSystem::DeleteElem(unsigned int id){
-    for(int i=0;i<dmgSprites.size();i++)
-        if(dmgSprites[i]->GetID()==id){
-            dmgSprites.erase(dmgSprites.begin()+i);
-            break;
-        }
-    for(int i=0;i<colliSprites.size();i++)
-        if(colliSprites[i]->GetID()==id){
-            colliSprites.erase(colliSprites.begin()+i);
-            break;
-        }
+    //这里使用count记录被删除的元素。这里使用循环用来删除所有同样ID的物体（因为程序员可能不小心将同一个物体放入多次放入ColliSystem中)
+    int count = 0;
+    do{
+        count = 0;
+        for(int i=0;i<dmgSprites.size();i++)
+            if(dmgSprites[i]->GetID()==id){
+                dmgSprites.erase(dmgSprites.begin()+i);
+                count++;
+                break;
+            }
+    }while(count!=0);
+    do{
+        count = 0;
+        for(int i=0;i<colliSprites.size();i++)
+            if(colliSprites[i]->GetID()==id){
+                colliSprites.erase(colliSprites.begin()+i);
+                count++;
+                break;
+            }
+    }while(count!=0);
 }
 
 void ColliSystem::AddColliable(ColliableSprite* cs){

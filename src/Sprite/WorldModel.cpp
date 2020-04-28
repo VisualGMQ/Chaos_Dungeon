@@ -16,11 +16,17 @@ void WorldModel::Destroy(){
 }
 
 void WorldModel::AddGameObject(GameObject* obj){
+    if(obj->GetName()=="MainRole")
+        role = (MainRole*)obj;
     objects.push_back(obj);
 }
 
 void WorldModel::Clear(){
     clear_all = true; 
+}
+
+MainRole* WorldModel::GetMainRole(){
+    return role;
 }
 
 void WorldModel::DeleteElem(unsigned int id){
@@ -35,6 +41,7 @@ void WorldModel::Update(){
 
 void WorldModel::junkRecycle(){
     if(clear_all){
+        IDType last_id;
         while(!objects.empty()){
             objects.back()->DeleteSelf();
             objects.pop_back();

@@ -95,6 +95,10 @@ void Object::AttachLayer(ColliLayer layer){
     ATTACH_STATE(this->coll_layer, layer, ColliLayer);
 }
 
+void Object::UnsetColliType(ColliType type){
+    UNSET_STATE(colli_type, type, ColliType);
+}
+
 ColliType Object::GetColliType() const{
     return colli_type;
 }
@@ -496,10 +500,10 @@ void ColliDealFunc(Manifold& m, BasicProp* prop1, BasicProp* prop2){
     }
 
     //DAMAGEABLE在碰撞之后生命值会减去对方的伤害值
-    if(prop1 && prop2 && HAS_STATE(m.o1->GetColliType(), ColliType::DAMAGEABLE)){
+    if(prop1 && prop2 && prop2->can_damage && HAS_STATE(m.o1->GetColliType(), ColliType::DAMAGEABLE)){
         prop1->hp -= prop2->damage;
     }
-    if(prop2 && prop2 && HAS_STATE(m.o2->GetColliType(), ColliType::DAMAGEABLE)){
+    if(prop2 && prop2 && prop1->can_damage && HAS_STATE(m.o2->GetColliType(), ColliType::DAMAGEABLE)){
         prop2->hp -= prop1->damage;
     }
 

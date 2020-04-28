@@ -5,5 +5,7 @@
 #include "LittleRobo.hpp"
 #include "Wall.hpp"
 #include "Bullet.hpp"
+#include "Door.hpp"
+#include "Room.hpp"
 
 #endif

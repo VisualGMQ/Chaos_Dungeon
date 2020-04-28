@@ -33,6 +33,9 @@ public:
     void Load(vector<Frame> frame_list);
     void Load(TextureSheet& sheet, vector<int> delay, int begin = 0, int end = -1);
     bool Valid() const;
+    size_t Size() const;
+    int CurrentIdx() const;
+    bool IsPlaying() const;
     void Play();
     void Stop();
     void Pause();

@@ -152,9 +152,9 @@ void Texture::Draw(float x, float y, float degree, FlipFlag flipflag){
     rotate = glm::rotate<float>(rotate, DEG2RAD(degree), glm::vec3(0, 0, 1));
     //flip image
     if(flipflag!=FlipFlag::NONE){
-        if(HAS_STATE(flipflag, FlipFlag::VERTICAL))
-            rotate = glm::rotate<float>(rotate, DEG2RAD(180.0), glm::vec3(0, 1, 0));
         if(HAS_STATE(flipflag, FlipFlag::HORIZENTAL))
+            rotate = glm::rotate<float>(rotate, DEG2RAD(180.0), glm::vec3(0, 1, 0));
+        if(HAS_STATE(flipflag, FlipFlag::VERTICAL))
             rotate = glm::rotate<float>(rotate, DEG2RAD(180.0), glm::vec3(1, 0, 0));
     }
     glm::mat4 translate = glm::mat4(1.0);

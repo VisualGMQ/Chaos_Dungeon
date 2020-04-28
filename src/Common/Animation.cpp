@@ -38,6 +38,14 @@ bool Animation::Valid() const{
     return !frames.empty();
 }
 
+size_t Animation::Size() const{
+    return frames.size();
+}
+
+int Animation::CurrentIdx() const{
+    return cur_frame;
+}
+
 void Animation::Play(){
     state = AniPlayState::PLAYING;
 }

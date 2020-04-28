@@ -10,6 +10,10 @@ void GameObject::ClearAllObject(){
 }
 
 void GameObject::DeleteObject(IDType del_id){
+    for(IDType& id : _willdel_list){
+        if(id == del_id)
+            return ;
+    }
     _willdel_list.push_back(del_id);
 }
 
@@ -18,7 +22,7 @@ GameObject::GameObject():isshow(true),name("GameObject"),id(cur_id++){
 }
 
 void GameObject::DeleteSelf(){
-    _willdel_list.push_back(GetID()) ;
+    GameObject::DeleteObject(GetID());
 }
 
 IDType GameObject::GetID() const{

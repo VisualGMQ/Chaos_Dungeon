@@ -14,6 +14,10 @@ protected:
         name = "DamageableSprite";
         colliobj.AttachColliType(ColliType::DAMAGEABLE);
     }
+    void update() override{
+        ColliableSprite::update();
+        prop.can_damage = false;
+    }
 };
 
 #endif

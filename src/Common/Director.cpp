@@ -35,6 +35,18 @@ Vec Director::GetMousePos() const{
     return mousepos;
 }
 
+int Director::WindowWidth(){
+    int w;
+    SDL_GetWindowSize(window, &w, nullptr);
+    return w;
+}
+
+int Director::WindowHeight(){
+    int h;
+    SDL_GetWindowSize(window, nullptr, &h);
+    return h;
+}
+
 void Director::EventHandle(){
     if(event.type==SDL_KEYDOWN){
         keys[event.key.keysym.sym] = true;
@@ -42,7 +54,7 @@ void Director::EventHandle(){
     if(event.type==SDL_KEYUP)
         keys[event.key.keysym.sym] = false;
     if(event.type==SDL_MOUSEMOTION){
-        mousepos.Set(event.motion.x, Director::GetInstance()->Height()-event.motion.y);
+        mousepos.Set(event.motion.x/static_cast<float>(WindowWidth())*Width(), (Director::GetInstance()->WindowHeight()-event.motion.y)/static_cast<float>(WindowHeight())*Height());
     }
     if(event.type==SDL_MOUSEBUTTONDOWN)
         mousekeys[event.button.button] = true;
@@ -89,6 +101,7 @@ int Director::Height() const{
 
 void Director::SizeAdapt(int neww, int newh){
     glViewport(0, 0, neww, newh);
+    SDL_SetWindowSize(window, neww, newh);  //这个地方必须要手动设置窗体大小。如果不设置虽然外观上大小变了，但是内部的w和h值仍然没变
 }
 
 void Director::Update(){

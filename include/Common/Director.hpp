@@ -25,6 +25,8 @@ public:
     SDL_Event& GetEvent();
     int Width() const;
     int Height() const;
+    int WindowWidth();
+    int WindowHeight();
     void EventHandle();
     void SizeAdapt(int neww, int newh);
     enum KeyState KeyState(SDL_Keycode keycode);

@@ -23,6 +23,10 @@ void Camera::MoveTo(float x, float y){
     position.Set(x, y);
 }
 
+Vec Camera::GetPosition() const{
+    return position;
+}
+
 void Camera::Update(){
     glm::mat4 mat = glm::mat4(1.0);
     mat = glm::translate(mat, glm::vec3(position.x, position.y, 0));

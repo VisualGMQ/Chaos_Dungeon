@@ -97,6 +97,7 @@ public:
     ColliType GetColliType() const;
     void SetColliType(ColliType type);
     void AttachColliType(ColliType type);
+    void UnsetColliType(ColliType type);
     ObjType GetType() const;
     Circle* GetCircle();
     AABB* GetAABB();

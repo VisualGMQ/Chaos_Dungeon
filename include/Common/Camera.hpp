@@ -8,6 +8,7 @@ public:
     static void Destroy();
     void Move(float dx, float dy);
     void MoveTo(float x, float y);
+    Vec GetPosition() const;
     void Update();
 private:
     Camera() = default;
