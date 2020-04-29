@@ -18,7 +18,13 @@ void WorldModel::Destroy(){
 void WorldModel::AddGameObject(GameObject* obj){
     if(obj->GetName()=="MainRole")
         role = (MainRole*)obj;
-    objects.push_back(obj);
+    //避免插入重复的物体
+    auto it = objects.begin();
+    for(it=objects.begin();it!=objects.end();it++)
+        if((*it)->GetID()==obj->GetID())
+            break;
+    if(it==objects.end())
+        objects.push_back(obj);
 }
 
 void WorldModel::Clear(){
@@ -43,7 +49,8 @@ void WorldModel::junkRecycle(){
     if(clear_all){
         IDType last_id;
         while(!objects.empty()){
-            objects.back()->DeleteSelf();
+            GameObject* obj = objects.back();
+            obj->DeleteSelf();
             objects.pop_back();
         }
         clear_all = false;

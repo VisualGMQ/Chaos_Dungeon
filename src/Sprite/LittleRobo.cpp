@@ -20,6 +20,8 @@ LittleRobo::LittleRobo():state(State::STAND),die_count(0),hori_flag(FlipFlag::NO
     TextureSheet ts_att("resources/monster1_attack.png", 7, 1);
     ts_att.Scale(3, 3);
     ani_attack.Load(ts_att, {2, 2, 2, 3, 2, 2, 2});
+    ani_attack.BindProp(&prop);
+    ani_attack.SetColliRange(3, 4, 1);
     colliobj.Set(AABB(Position().x-tex_stand.Size().w/2, Position().y-tex_stand.Size().h/2, tex_stand.Width(), tex_stand.Height()));
     draw_ptr = &tex_stand;
     colliobj.AttachLayer(ColliLayer::ENEMY);
@@ -27,8 +29,8 @@ LittleRobo::LittleRobo():state(State::STAND),die_count(0),hori_flag(FlipFlag::NO
 }
 
 void LittleRobo::Init() {
-    prop.hp = 2;
-    prop.damage = 1;
+    prop.hp = 4;
+    prop.damage = 0;
 }
 
 void LittleRobo::Stand(){
@@ -64,7 +66,6 @@ void LittleRobo::update() {
     DamageableSprite::update();
     ani_walk.Update();
     ani_attack.Update();
-    colliobj.Update(1.0/Director::GetInstance()->fps);
 
     MainRole* role = WorldModel::GetInstance()->GetMainRole();
     Vec role_pos = role->Position();
@@ -72,24 +73,20 @@ void LittleRobo::update() {
         hori_flag = FlipFlag::HORIZENTAL;
     else
         hori_flag = FlipFlag::NONE;
-    //当主角在的时候走向主角
+    //如果在规定距离，则攻击主角
     const int attackable_dist = 40;
     if(Distance(role_pos, Position())<attackable_dist){
         Attack();
+        ani_walk.Stop();
         colliobj.physic_info.v.Set(0, 0);
-    }else //如果在规定距离，则攻击主角
+    }else{ //当主角在的时候走向主角
         Walk(Normalize(role->Position()-Position())*5);
-    if(state==State::ATTACK){
-        int cur_frame_idx = ani_attack.CurrentIdx();
-        if(cur_frame_idx>=2 && cur_frame_idx<=5){
-            prop.can_damage = true;
-            prop.damage = 1;
-        }
-        
+        ani_attack.Stop();
     }
-
-    if(prop.hp<=0)
+    if(prop.hp<=0){
         WorldModel::GetInstance()->DeleteElem(GetID());
+        ColliSystem::GetInstance()->DeleteElem(GetID());
+    }
 }
 
 void LittleRobo::draw() {

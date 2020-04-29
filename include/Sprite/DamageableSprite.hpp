@@ -16,7 +16,6 @@ protected:
     }
     void update() override{
         ColliableSprite::update();
-        prop.can_damage = false;
     }
 };
 

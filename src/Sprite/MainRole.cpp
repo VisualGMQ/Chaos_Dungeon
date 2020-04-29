@@ -30,9 +30,6 @@ MainRole* MainRole::Create(){
 
 MainRole::MainRole():state(MainRole::State::STAND),draw_ptr(&tex_stand){
     name = "MainRole";
-}
-
-void MainRole::Init() {
     tex_stand.Load("resources/mainrole_stand.png");
     tex_stand.Scale(3, 3);
     TextureSheet ts("resources/mainrole_walk.png", 2, 1);
@@ -41,6 +38,9 @@ void MainRole::Init() {
     colliobj.Set(AABB(Position().x-tex_stand.Width()/2, Position().y-tex_stand.Height()/2, tex_stand.Width(), tex_stand.Height()));
     colliobj.AttachColliType(ColliType::SOLIDABLE);
     colliobj.AttachLayer(ColliLayer::PLAYER);
+}
+
+void MainRole::Init() {
     prop.hp = 3;
     prop.damage = 0;
     ColliSystem::GetInstance()->AddDamageable(this);
@@ -79,10 +79,11 @@ void MainRole::update() {
     }       
     if(director->MouseButtonState(SDL_BUTTON_LEFT)==KeyState::PRESSED)
         shoot();
-    colliobj.Update(1.0/Director::GetInstance()->fps);
     ani_walk.Update();
-    if(prop.hp<=0)
+    if(prop.hp<=0){
         Hide();
+        ColliSystem::GetInstance()->DeleteElem(GetID());
+    }
 }
 
 void MainRole::shoot(){

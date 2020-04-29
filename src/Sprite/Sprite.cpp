@@ -21,5 +21,6 @@ void ColliableSprite::MoveTo(float x, float y){
 }
 
 void ColliableSprite::update() {
+    colliobj.Update(1.0/Director::GetInstance()->fps);
     position = colliobj.Center();
 }

@@ -45,11 +45,21 @@ void ColliSystem::DeleteElem(unsigned int id){
 }
 
 void ColliSystem::AddColliable(ColliableSprite* cs){
-    colliSprites.push_back(cs);
+    auto it = colliSprites.begin();
+    for(;it!=colliSprites.end();it++)
+        if((*it)->GetID()==cs->GetID())
+                break;
+    if(it==colliSprites.end())
+        colliSprites.push_back(cs);
 }
 
 void ColliSystem::AddDamageable(DamageableSprite* ds){
-    dmgSprites.push_back(ds);
+    auto it = dmgSprites.begin();
+    for(;it!=dmgSprites.end();it++)
+        if((*it)->GetID()==ds->GetID())
+            break;
+    if(it==dmgSprites.end())
+        dmgSprites.push_back(ds);
 }
 
 void ColliSystem::Update(){

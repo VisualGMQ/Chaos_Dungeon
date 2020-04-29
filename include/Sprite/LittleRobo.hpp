@@ -4,7 +4,7 @@
 #include "Drawable.hpp"
 #include "DamageableSprite.hpp"
 #include "ColliSystem.hpp"
-#include "Animation.hpp"
+#include "ColliAnimation.hpp"
 #include "WorldModel.hpp"
 
 class LittleRobo final : public DamageableSprite{
@@ -28,7 +28,7 @@ private:
     void draw() override;
     Drawable* draw_ptr;
     Animation ani_walk;
-    Animation ani_attack;
+    ColliAnimation ani_attack;
     Texture tex_stand;
     Texture tex_die;
     State state;

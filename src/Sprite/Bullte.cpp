@@ -50,6 +50,7 @@ void Bullet::update() {
     //子弹死亡的时候自动销毁
     if(!isalive){
         WorldModel::GetInstance()->DeleteElem(GetID());
+        ColliSystem::GetInstance()->DeleteElem(GetID());
     }
 }
 

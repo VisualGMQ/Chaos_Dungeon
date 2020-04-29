@@ -32,20 +32,20 @@ public:
     Animation(TextureSheet& sheet, vector<int> delay, int begin = 0, int end = -1);
     void Load(vector<Frame> frame_list);
     void Load(TextureSheet& sheet, vector<int> delay, int begin = 0, int end = -1);
-    bool Valid() const;
+    virtual bool Valid() const;
     size_t Size() const;
     int CurrentIdx() const;
     bool IsPlaying() const;
-    void Play();
-    void Stop();
-    void Pause();
+    virtual void Play();
+    virtual void Stop();
+    virtual void Pause();
     void Scale(float sx, float sy);
     AniPlayState State() const; 
     bool IsLooping() const;
     void EnableLoop();
     void DisableLoop();
     Frame& CurrentFrame();
-    void Update();
+    virtual void Update();
     void Draw(float x, float y, float degree = 0, FlipFlag flag = FlipFlag::NONE) override;
     ~Animation() = default;
 private:
