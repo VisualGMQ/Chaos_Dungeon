@@ -16,6 +16,8 @@
 #include <vector>
 #include <iostream>
 #include <map>
+#include <ctime>
+#include <random>
 using namespace std;
 
 class GameBody{
@@ -24,10 +26,12 @@ public:
     void Update();
     ~GameBody();
 protected:
+    void initCursor();
     void init();
     void step();
     map<SDL_Keysym, bool> keys;
     Vec mouse_pos;
+    SDL_Cursor* cursor;
 };
 
 #endif

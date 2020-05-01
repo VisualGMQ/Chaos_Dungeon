@@ -44,6 +44,10 @@ void ColliSystem::DeleteElem(unsigned int id){
     }while(count!=0);
 }
 
+void ColliSystem::AddOneUseable(OneUseWave* ow){
+    oneuseSprites.push_back(ow);
+}
+
 void ColliSystem::AddColliable(ColliableSprite* cs){
     auto it = colliSprites.begin();
     for(;it!=colliSprites.end();it++)
@@ -86,4 +90,16 @@ void ColliSystem::Update(){
             }
         }   
     }
+
+    for(int i=0;i<oneuseSprites.size();i++){
+        for(int j=0;j<dmgSprites.size();j++){
+            Manifold m;
+            if(Collision(&oneuseSprites.at(i)->GetColliObject(), &dmgSprites.at(j)->GetColliObject(), m)){
+                ColliDealFunc(m, &oneuseSprites.at(i)->prop, &dmgSprites.at(j)->prop);
+            }   
+        }
+    }
+    for(int i=0;i<oneuseSprites.size();i++)
+        oneuseSprites[i]->DeleteSelf();
+    oneuseSprites.clear();
 }

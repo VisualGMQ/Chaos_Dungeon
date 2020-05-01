@@ -51,6 +51,13 @@ void Bullet::update() {
     if(!isalive){
         WorldModel::GetInstance()->DeleteElem(GetID());
         ColliSystem::GetInstance()->DeleteElem(GetID());
+        TextureSheet ts("resources/buster.png", 5, 1);
+        ts.Scale(3, 3);
+        OneUseAnimation* buster = OneUseAnimation::Create();
+        buster->Load(ts, {2, 2, 2, 2, 2});
+        buster->MoveTo(Position().x, Position().y);
+        WorldModel::GetInstance()->AddGameObject("effect", buster);
+
     }
 }
 

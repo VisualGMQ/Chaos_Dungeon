@@ -3,6 +3,7 @@
 #include "Sprite/DamageableSprite.hpp"
 #include "WorldModel.hpp"
 #include "Camera.hpp"
+#include "OneUseAnimation.hpp"
 
 class Bullet final : public DamageableSprite{
 public:

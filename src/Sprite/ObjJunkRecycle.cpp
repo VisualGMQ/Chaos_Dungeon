@@ -10,6 +10,10 @@ void ObjJunkRecycle(){
             RECYCLE_FINALCLASS_BY_INSTANCE(LittleRobo, GameObject::_objects, obj)
             RECYCLE_FINALCLASS_BY_INSTANCE(Wall, GameObject::_objects, obj)
             RECYCLE_FINALCLASS_BY_INSTANCE(Bullet, GameObject::_objects, obj)
+            RECYCLE_FINALCLASS_BY_INSTANCE(OneUseAnimation, GameObject::_objects, obj)
+            RECYCLE_FINALCLASS_BY_INSTANCE(StaticTexture, GameObject::_objects, obj)
+            RECYCLE_FINALCLASS_BY_INSTANCE(OneUseWave, GameObject::_objects, obj)
+            RECYCLE_FINALCLASS_BY_INSTANCE(Bomb, GameObject::_objects, obj)
         }
         GameObject::_objects.clear();
         GameObject::_willdel_list.clear();
@@ -25,6 +29,10 @@ void ObjJunkRecycle(){
                     RECYCLE_FINALCLASS_BY_ITER(LittleRobo, GameObject::_objects, i)
                     RECYCLE_FINALCLASS_BY_ITER(Wall, GameObject::_objects, i)
                     RECYCLE_FINALCLASS_BY_ITER(Bullet, GameObject::_objects, i)
+                    RECYCLE_FINALCLASS_BY_ITER(OneUseAnimation, GameObject::_objects, i)
+                    RECYCLE_FINALCLASS_BY_ITER(StaticTexture, GameObject::_objects, i)
+                    RECYCLE_FINALCLASS_BY_ITER(OneUseWave, GameObject::_objects, i)
+                    RECYCLE_FINALCLASS_BY_ITER(Bomb, GameObject::_objects, i)
                 }
             }
         }

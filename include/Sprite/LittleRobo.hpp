@@ -2,12 +2,12 @@
 #define LITTLE_ROBO
 #include "Sprite.hpp"
 #include "Drawable.hpp"
-#include "DamageableSprite.hpp"
+#include "Creature.hpp"
 #include "ColliSystem.hpp"
 #include "ColliAnimation.hpp"
 #include "WorldModel.hpp"
 
-class LittleRobo final : public DamageableSprite{
+class LittleRobo final : public Creature{
 public:
     enum State{
         STAND,
@@ -25,15 +25,18 @@ public:
 private:
     LittleRobo();
     void update() override;
+    void alive_logic() override;
+    void die_logic() override;
     void draw() override;
     Drawable* draw_ptr;
     Animation ani_walk;
     ColliAnimation ani_attack;
     Texture tex_stand;
-    Texture tex_die;
     State state;
     int die_count;
     FlipFlag hori_flag;
+    int die_time_count;
+    int oldhp;
 };
 
 #endif

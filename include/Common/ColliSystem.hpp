@@ -3,6 +3,7 @@
 #include "Colliable.hpp"
 #include "Collision.hpp"
 #include "Sprite/DamageableSprite.hpp"
+#include "Sprite/OneUseWave.hpp"
 #include <vector>
 using namespace std;
 
@@ -19,11 +20,13 @@ public:
     void DeleteElem(unsigned int id);
     void AddColliable(ColliableSprite* cs);
     void AddDamageable(DamageableSprite* ds);
+    void AddOneUseable(OneUseWave* ow);
     void Update();  /** 处理碰撞检测 */
 private:
     static ColliSystem* instance;
     vector<DamageableSprite*> dmgSprites;
     vector<ColliableSprite*> colliSprites;
+    vector<OneUseWave*> oneuseSprites;
 };
 
 #endif

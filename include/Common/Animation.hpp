@@ -35,10 +35,12 @@ public:
     virtual bool Valid() const;
     size_t Size() const;
     int CurrentIdx() const;
+    void BackToFirstFrame();
     bool IsPlaying() const;
     virtual void Play();
     virtual void Stop();
     virtual void Pause();
+    virtual void Replay();
     void Scale(float sx, float sy);
     AniPlayState State() const; 
     bool IsLooping() const;

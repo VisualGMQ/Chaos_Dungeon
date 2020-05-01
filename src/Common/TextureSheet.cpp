@@ -1,8 +1,8 @@
 #include "TextureSheet.hpp"
 
-TextureSheet::TextureSheet():col(0),row(0){}
+TextureSheet::TextureSheet():col(0),row(0),per_w(0),per_h(0){}
 
-TextureSheet::TextureSheet(string filename, int col, int row){
+TextureSheet::TextureSheet(string filename, int col, int row):TextureSheet(){
     Load(filename, col, row);
 }
 
@@ -53,6 +53,8 @@ Texture& TextureSheet::Get(int col, int row){
 void TextureSheet::Scale(float sx, float sy){
     for(int i=0;i<textures.size();i++)
         textures[i].Scale(sx, sy);
+    per_w *= sx;
+    per_h *= sy;
 }
 
 bool TextureSheet::Valid() const{

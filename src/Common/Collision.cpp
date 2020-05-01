@@ -39,6 +39,11 @@ Vec AABB::Center() const {
     return Vec((tl.x+br.x)/2, (tl.y+br.y)/2);
 }
 
+ostream& operator<<(ostream& o, const AABB& aabb){
+    o<<"ABBB("<<aabb.tl<<", "<<aabb.br<<")";
+    return o;
+}
+
 OBB::OBB(Vec cent, float w_2, float h_2, float degree):center(cent),half_h(h_2),half_w(w_2),rotation(degree){}
 
 void OBB::GetPoints(Vec points[4]){
@@ -50,9 +55,19 @@ void OBB::GetPoints(Vec points[4]){
     points[3] = center-axis_x+axis_y;
 }
 
+ostream& operator<<(ostream& o, const OBB& obb){
+    o<<"OBB:(("<<obb.center<<", ("<<obb.half_w<<", "<<obb.half_h<<"), "<<obb.rotation.GetDegree()<<")";
+    return o;
+}
+
 Circle::Circle(float cx, float cy, float r):center(cx, cy),radius(r){}
 
 Circle::Circle():radius(0){}
+
+ostream& operator<<(ostream& o, const Circle& circle){
+    o<<"Circle:("<<circle.center<<", "<<circle.radius<<")";
+    return o;
+}
 
 Manifold::Manifold():o1(nullptr),o2(nullptr),deepth(0){}
 
@@ -128,16 +143,22 @@ Object::Object(Circle circle):Object(){
 }
 
 void Object::Set(AABB aabb){
+    if(this->aabb)
+        delete this->aabb;
     type = ObjType::AABB;
     this->aabb = new AABB(aabb);
 }
 
 void Object::Set(OBB obb){
+    if(this->obb)
+        delete this->obb;
     type = ObjType::OBB;
     this->obb = new OBB(obb);
 }
 
 void Object::Set(Circle circle){
+    if(this->circle)
+        delete this->circle;
     type = ObjType::CIRCLE;
     this->circle = new Circle(circle);
 }
@@ -502,11 +523,13 @@ void ColliDealFunc(Manifold& m, BasicProp* prop1, BasicProp* prop2){
     //DAMAGEABLE在碰撞之后生命值会减去对方的伤害值
     if(prop1 && prop2 && prop2->can_damage && HAS_STATE(m.o1->GetColliType(), ColliType::DAMAGEABLE)){
         prop1->hp -= prop2->damage;
-        prop2->can_damage = false;
+        if(!HAS_STATE(m.o2->GetColliType(), ColliType::WAVEABLE))
+            prop2->can_damage = false;
     }
     if(prop2 && prop2 && prop1->can_damage && HAS_STATE(m.o2->GetColliType(), ColliType::DAMAGEABLE)){
         prop2->hp -= prop1->damage;
-        prop1->can_damage = false;
+        if(!HAS_STATE(m.o1->GetColliType(), ColliType::WAVEABLE))
+            prop1->can_damage = false;
     }
 
     //BULLETABLE在碰撞之后会将自己的生命值减1

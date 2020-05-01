@@ -6,12 +6,10 @@ LittleRobo* LittleRobo::Create(){
     return robo;
 }
 
-LittleRobo::LittleRobo():state(State::STAND),die_count(0),hori_flag(FlipFlag::NONE){
+LittleRobo::LittleRobo():state(State::STAND),die_count(0),hori_flag(FlipFlag::NONE),oldhp(0){
     name = "LittleRobo";
     prop.can_damage = false;
     tex_stand.Load("resources/monster1_stand.png");
-    tex_die.Load("resources/monster1_die.png");
-    tex_die.Scale(3, 3);
     tex_stand.Scale(3, 3);
     TextureSheet ts_walk("resources/monster1_walk.png", 2, 1);
     ts_walk.Scale(3, 3);
@@ -29,6 +27,7 @@ LittleRobo::LittleRobo():state(State::STAND),die_count(0),hori_flag(FlipFlag::NO
 }
 
 void LittleRobo::Init() {
+    die_time_count = 0;
     prop.hp = 4;
     prop.damage = 0;
 }
@@ -43,13 +42,13 @@ void LittleRobo::Attack(){
     draw_ptr = &ani_attack;
     if(ani_attack.State()!=AniPlayState::PLAYING){
         ani_attack.Stop();
+        ani_attack.BackToFirstFrame();
         ani_attack.Play();
     }
 }
 
 void LittleRobo::Die(){
     state = State::DIE;
-    draw_ptr = &tex_die;
 }
 
 void LittleRobo::Walk(Vec vel){
@@ -63,11 +62,27 @@ void LittleRobo::Walk(Vec vel){
 }
 
 void LittleRobo::update() {
-    DamageableSprite::update();
+    Creature::update();
+    if(oldhp>prop.hp){
+        TextureSheet ts("resources/buster2.png", 5, 1);
+        ts.Scale(3, 3);
+        OneUseAnimation* ani = OneUseAnimation::Create();
+        ani->Load(ts, {1, 1, 1, 1, 1});
+        ani->MoveTo(Position().x, Position().y);
+        WorldModel::GetInstance()->AddGameObject("effect", ani);
+    }
     ani_walk.Update();
     ani_attack.Update();
+    oldhp = prop.hp;
+}
 
-    MainRole* role = WorldModel::GetInstance()->GetMainRole();
+void LittleRobo::alive_logic(){
+    MainRole* role = MainRole::GetRole();
+    if(!role || role->prop.hp<=0){
+        Stand();
+        colliobj.physic_info.v.Set(0, 0);
+        return;
+    }
     Vec role_pos = role->Position();
     if(role_pos.x<Position().x)
         hori_flag = FlipFlag::HORIZENTAL;
@@ -83,10 +98,19 @@ void LittleRobo::update() {
         Walk(Normalize(role->Position()-Position())*5);
         ani_attack.Stop();
     }
-    if(prop.hp<=0){
-        WorldModel::GetInstance()->DeleteElem(GetID());
-        ColliSystem::GetInstance()->DeleteElem(GetID());
-    }
+    //子弹碰撞特效
+        
+}
+void LittleRobo::die_logic(){
+    TextureSheet ts("resources/monster1_die.png", 1, 1);
+    ts.Scale(3, 3);
+    OneUseAnimation* ani = OneUseAnimation::Create();
+    ani->Flip(hori_flag);
+    ani->Load(ts, {100});
+    ani->MoveTo(Position().x, Position().y);
+    WorldModel::GetInstance()->AddGameObject("object", ani);
+    ColliSystem::GetInstance()->DeleteElem(GetID());
+    WorldModel::GetInstance()->DeleteElem(GetID());
 }
 
 void LittleRobo::draw() {

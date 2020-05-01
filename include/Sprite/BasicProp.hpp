@@ -7,8 +7,7 @@
 #ifndef BASICPROP_HPP 
 #define BASICPROP_HPP
 
-class BasicProp{
-public:
+struct BasicProp{
     BasicProp();
     int hp;
     int damage;

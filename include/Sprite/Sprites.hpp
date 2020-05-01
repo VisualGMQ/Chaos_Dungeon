@@ -6,6 +6,8 @@
 #include "Wall.hpp"
 #include "Bullet.hpp"
 #include "Door.hpp"
-#include "Room.hpp"
+#include "OneUseAnimation.hpp"
+#include "StaticTexture.hpp"
+#include "HpBar.hpp"
 
 #endif

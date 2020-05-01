@@ -20,6 +20,8 @@ struct AABB{
     Vec br; /** @warn 这个br是在SDL原本坐标系下的br*/
 };
 
+ostream& operator<<(ostream& o, const AABB& aabb);
+
 struct OBB{
     OBB() = default;
     OBB(Vec cent, float w_2, float h_2, float degree);
@@ -30,12 +32,16 @@ struct OBB{
     float half_h;
 };
 
+ostream& operator<<(ostream& o, const OBB& obb);
+
 struct Circle{
     Circle();
     Circle(float cx, float cy, float r);
     Vec center;
     float radius;
 };
+
+ostream& operator<<(ostream& o, const Circle& circle);
 
 enum class ObjType{
     OBJ_TYPE_UNKNOWN = 0,
@@ -50,7 +56,8 @@ enum ColliType{
     DAMAGEABLE = 0x02,   /** 物体可以给与和接受伤害 */
     FORCEABLE = 0x04,    /** 物体在碰撞之后会根据自身速度和质量给另一个物体一个冲量 */
     INDESTRUCTIBLE = 0x08, /** 不可被摧毁的，这种物体在碰撞之后不会由于生命值为0而被销毁 */
-    BULLETABLE = 0x10 /** 物体是子弹，子弹在每次碰撞之后都会将自己的生命值减1 */
+    BULLETABLE = 0x10, /** 物体是子弹，子弹在每次碰撞之后都会将自己的生命值减1 */
+    WAVEABLE = 0x12 /** 冲击波式，会伤害到范围内的所有Damageable单位 */
 };
 
 struct PhysicInfo{

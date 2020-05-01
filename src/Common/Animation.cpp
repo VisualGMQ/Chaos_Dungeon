@@ -17,13 +17,19 @@ void Animation::Load(vector<Frame> frame_list){
     this->frames = frame_list;  
 }
 
-Animation::Animation(initializer_list<Frame> frame_list){
+Animation::Animation(initializer_list<Frame> frame_list):Animation(){
     for(auto it=frame_list.begin();it!=frame_list.end();it++)
         frames.push_back(*it);
 }
 
-Animation::Animation(TextureSheet& sheet, vector<int> delay, int begin, int end){
+Animation::Animation(TextureSheet& sheet, vector<int> delay, int begin, int end):Animation(){
     Load(sheet, delay, begin, end);
+}
+
+void Animation::Replay(){
+    Stop();
+    BackToFirstFrame();
+    Play();
 }
 
 void Animation::Load(TextureSheet& sheet, vector<int> delay, int begin, int end){
@@ -36,6 +42,10 @@ void Animation::Load(TextureSheet& sheet, vector<int> delay, int begin, int end)
 
 bool Animation::Valid() const{
     return !frames.empty();
+}
+
+void Animation::BackToFirstFrame(){
+    cur_frame = 0;
 }
 
 size_t Animation::Size() const{
@@ -52,7 +62,6 @@ void Animation::Play(){
 
 void Animation::Stop(){
     state = AniPlayState::STOPING;
-    cur_frame = 0;
     time_count = 0;
 }
 
@@ -93,8 +102,10 @@ void Animation::Update(){
             cur_frame++;
         }
         if(cur_frame>=frames.size()){
+            cur_frame = frames.size()-1;
             if(isloop){
                 Stop();
+                BackToFirstFrame();
                 Play();
             }else
                 Stop();
