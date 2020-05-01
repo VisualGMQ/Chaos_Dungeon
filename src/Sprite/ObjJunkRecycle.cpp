@@ -14,6 +14,7 @@ void ObjJunkRecycle(){
             RECYCLE_FINALCLASS_BY_INSTANCE(StaticTexture, GameObject::_objects, obj)
             RECYCLE_FINALCLASS_BY_INSTANCE(OneUseWave, GameObject::_objects, obj)
             RECYCLE_FINALCLASS_BY_INSTANCE(Bomb, GameObject::_objects, obj)
+            RECYCLE_FINALCLASS_BY_INSTANCE(Number, GameObject::_objects, obj)
         }
         GameObject::_objects.clear();
         GameObject::_willdel_list.clear();
@@ -33,6 +34,7 @@ void ObjJunkRecycle(){
                     RECYCLE_FINALCLASS_BY_ITER(StaticTexture, GameObject::_objects, i)
                     RECYCLE_FINALCLASS_BY_ITER(OneUseWave, GameObject::_objects, i)
                     RECYCLE_FINALCLASS_BY_ITER(Bomb, GameObject::_objects, i)
+                    RECYCLE_FINALCLASS_BY_ITER(Number, GameObject::_objects, i)
                 }
             }
         }

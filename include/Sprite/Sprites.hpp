@@ -9,5 +9,8 @@
 #include "OneUseAnimation.hpp"
 #include "StaticTexture.hpp"
 #include "HpBar.hpp"
+#include "Number.hpp"
+#include "Timer.hpp"
+#include "KilledEnemyNum.hpp"
 
 #endif

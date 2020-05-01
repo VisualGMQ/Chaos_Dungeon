@@ -111,6 +111,7 @@ void LittleRobo::die_logic(){
     WorldModel::GetInstance()->AddGameObject("object", ani);
     ColliSystem::GetInstance()->DeleteElem(GetID());
     WorldModel::GetInstance()->DeleteElem(GetID());
+    KilledEnemyNum_Sington::GetInstance()->IncreaseOneNum();
 }
 
 void LittleRobo::draw() {

@@ -6,6 +6,7 @@
 #include "ColliSystem.hpp"
 #include "ColliAnimation.hpp"
 #include "WorldModel.hpp"
+#include "KilledEnemyNum.hpp"
 
 class LittleRobo final : public Creature{
 public:

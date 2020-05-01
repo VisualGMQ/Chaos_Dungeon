@@ -48,7 +48,7 @@ void GameBody::init(){
 
     //add hpbar
     HpBar* hpbar = HpBar::GetInstance();
-    hpbar->MoveTo(50, director->Height()-50);
+    hpbar->MoveTo(50, director->Height()-20);
     wm->AddGameObject("ui", hpbar);
     hpbar->SetHp(mainrole->prop.hp);
 
@@ -83,6 +83,18 @@ void GameBody::init(){
     robo->Init();
     robo->MoveTo(500, 500);
     wm->AddGameObject("object", robo);
+    
+    //Timer
+    timer = Timer::Create();
+    timer->Scale(5, 5);
+    timer->MoveTo(300, director->Height()-20);
+    WorldModel::GetInstance()->AddGameObject("ui", timer);
+
+    //KilledEnemyNum
+    KilledEnemyNum_Sington* kilennum = KilledEnemyNum_Sington::GetInstance();
+    kilennum->Scale(5, 5);
+    kilennum->MoveTo(500, director->Height()-20);
+    WorldModel::GetInstance()->AddGameObject("ui", KilledEnemyNum_Sington::GetInstance());
 }
 
 void GameBody::initCursor(){

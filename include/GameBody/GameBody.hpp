@@ -32,6 +32,7 @@ protected:
     map<SDL_Keysym, bool> keys;
     Vec mouse_pos;
     SDL_Cursor* cursor;
+    Timer* timer;
 };
 
 #endif
