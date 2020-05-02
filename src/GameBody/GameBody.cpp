@@ -88,13 +88,18 @@ void GameBody::init(){
     timer = Timer::Create();
     timer->Scale(5, 5);
     timer->MoveTo(300, director->Height()-20);
-    WorldModel::GetInstance()->AddGameObject("ui", timer);
+    wm->AddGameObject("ui", timer);
 
     //KilledEnemyNum
     KilledEnemyNum_Sington* kilennum = KilledEnemyNum_Sington::GetInstance();
     kilennum->Scale(5, 5);
-    kilennum->MoveTo(500, director->Height()-20);
-    WorldModel::GetInstance()->AddGameObject("ui", KilledEnemyNum_Sington::GetInstance());
+    kilennum->MoveTo(550, director->Height()-20);
+    wm->AddGameObject("ui", KilledEnemyNum_Sington::GetInstance());
+
+    //test RangeThrower
+    //RangeThrower* thrower = RangeThrower::Create();
+    //thrower->MoveTo(400, 400);
+    //wm->AddGameObject("object", thrower);
 }
 
 void GameBody::initCursor(){

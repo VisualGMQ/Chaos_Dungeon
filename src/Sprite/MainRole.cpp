@@ -85,6 +85,17 @@ void MainRole::bomb(){
     WorldModel::GetInstance()->AddGameObject("item", bomb);
 }
 
+void MainRole::Collied(Object* oth, BasicProp* prop, const Manifold* m){
+    if(HAS_STATE(oth->GetColliType(), ColliType::BULLETABLE)){
+        TextureSheet ts("resources/buster2.png", 5, 1);
+        ts.Scale(3, 3);
+        OneUseAnimation* ani = OneUseAnimation::Create();
+        ani->Load(ts, {1, 1, 1, 1, 1});
+        ani->MoveTo(Position().x, Position().y);
+        WorldModel::GetInstance()->AddGameObject("effect", ani);
+    }
+}
+
 void MainRole::alive_logic() {
     colliobj.physic_info.v.Set(0, 0);
     if(!HAS_STATE(state, INIT) && prop.hp>0){

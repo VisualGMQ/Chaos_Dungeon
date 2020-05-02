@@ -66,18 +66,26 @@ void ColliSystem::AddDamageable(DamageableSprite* ds){
         dmgSprites.push_back(ds);
 }
 
+void callColliDealFunc(Manifold* m, Colliable* obj1, Colliable* obj2, BasicProp* prop){
+    obj1->Collied(&obj2->GetColliObject(), prop, m);
+}
+
 void ColliSystem::Update(){
     for(int i=0;i<dmgSprites.size();i++){
         for(int j=i+1;j<dmgSprites.size();j++){
             Manifold m;
             if(Collision(&dmgSprites.at(i)->GetColliObject(), &dmgSprites[j]->GetColliObject(), m)){
-                ColliDealFunc(m, &dmgSprites.at(i)->prop, &dmgSprites.at(j)->prop);
+                DefaultColliFunc(&m, &dmgSprites.at(i)->prop, &dmgSprites.at(j)->prop);
+                callColliDealFunc(&m, dmgSprites.at(i), dmgSprites.at(j), &dmgSprites.at(j)->prop);
+                callColliDealFunc(&m, dmgSprites.at(j), dmgSprites.at(i), &dmgSprites.at(i)->prop);
             }
         }
         for(int j=0;j<colliSprites.size();j++){
             Manifold m;
             if(Collision(&dmgSprites.at(i)->GetColliObject(), &colliSprites.at(j)->GetColliObject(), m)){
-                ColliDealFunc(m, &dmgSprites.at(i)->prop, nullptr);
+                DefaultColliFunc(&m, &dmgSprites.at(i)->prop, nullptr);
+                callColliDealFunc(&m, dmgSprites.at(i), colliSprites.at(j), nullptr);
+                callColliDealFunc(&m, colliSprites.at(j), dmgSprites.at(i), &dmgSprites.at(i)->prop);
             }
         }
     }
@@ -86,7 +94,9 @@ void ColliSystem::Update(){
         for(int j=i+1;j<colliSprites.size();j++){
             Manifold m;
             if(Collision(&colliSprites.at(i)->GetColliObject(), &colliSprites.at(j)->GetColliObject(), m)){
-                ColliDealFunc(m, nullptr, nullptr);
+                DefaultColliFunc(&m, nullptr, nullptr);
+                callColliDealFunc(&m, colliSprites.at(i), colliSprites.at(j), nullptr);
+                callColliDealFunc(&m, colliSprites.at(j), colliSprites.at(i), nullptr);
             }
         }   
     }
@@ -95,10 +105,13 @@ void ColliSystem::Update(){
         for(int j=0;j<dmgSprites.size();j++){
             Manifold m;
             if(Collision(&oneuseSprites.at(i)->GetColliObject(), &dmgSprites.at(j)->GetColliObject(), m)){
-                ColliDealFunc(m, &oneuseSprites.at(i)->prop, &dmgSprites.at(j)->prop);
+                DefaultColliFunc(&m, &dmgSprites.at(j)->prop, nullptr);
+                callColliDealFunc(&m, oneuseSprites.at(i), dmgSprites.at(j), &dmgSprites.at(j)->prop);
+                callColliDealFunc(&m, dmgSprites.at(j), oneuseSprites.at(i), nullptr);
             }   
         }
     }
+
     for(int i=0;i<oneuseSprites.size();i++)
         oneuseSprites[i]->DeleteSelf();
     oneuseSprites.clear();

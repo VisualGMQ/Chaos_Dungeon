@@ -37,6 +37,7 @@ public:
     };
     static MainRole* GetRole();
     void Init() override;
+    void Collied(Object* oth, BasicProp* prop, const Manifold* m) override;
     ~MainRole();
 protected:
     MainRole();

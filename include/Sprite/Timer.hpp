@@ -7,7 +7,7 @@
 class Timer : public GameObject{
 public:
     static Timer* Create();
-    void IncreaseSecond(float second);
+    void IncreaseMilliSecond(int millisec);
     void Reset();
     void Scale(float sx, float sy);
 private:
@@ -17,7 +17,8 @@ private:
     ~Timer();
     int hour;
     int min;
-    float sec;
+    int sec;
+    int millisec;
     Number* num;
     Texture tex_colon;
     Texture tex_ico;

@@ -12,8 +12,12 @@ Timer::Timer(){
     tick = SDL_GetTicks();
 }
 
-void Timer::IncreaseSecond(float second){
-    sec += second;
+void Timer::IncreaseMilliSecond(int millisec){
+    this->millisec += millisec;
+    if(this->millisec>=1000){
+        sec++;
+        this->millisec = 0;
+    }
     if(sec>=60){
         sec = 0;
         min++;
@@ -37,7 +41,7 @@ void Timer::Scale(float sx, float sy){
 }
 
 void Timer::update(){
-    IncreaseSecond((SDL_GetTicks()-tick)/1000.0);
+    IncreaseMilliSecond((SDL_GetTicks()-tick));
     tick = SDL_GetTicks();
 }
 
@@ -67,6 +71,14 @@ void Timer::draw(){
 
     //draw second
     num->SetNum(sec);
+    num->MoveTo(Position().x+offset_x, Position().y);
+    num->Update();
+    offset_x += padding+num->GetSize().w;
+    tex_colon.Draw(Position().x+offset_x, Position().y);
+    offset_x += padding+tex_colon.Width();
+
+    //draw millisec, 这里将millisec除以10，只显示两位，看上去比较整齐
+    num->SetNum(millisec/10);
     num->MoveTo(Position().x+offset_x, Position().y);
     num->Update();
 }

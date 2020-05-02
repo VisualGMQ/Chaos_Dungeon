@@ -3,6 +3,7 @@
 #include "math.hpp"
 #include "Sprite/BasicProp.hpp"
 #include "HelpFunc.hpp"
+
 /* 迭代碰撞的次数 */
 #define RETRIVE_COLLI_NUM 8
 using namespace std;
@@ -154,15 +155,5 @@ bool OBBvsCircle(Manifold& m);
  * @warn m参数的内容并不会对这个函数的结果受到影响。
  */
 bool Collision(Object* obj1, Object* obj2, Manifold& m);
-
-/**
- * @brief 处理碰撞检测的函数，如果你有自己的碰撞检测处理，可以加在这里
- * @param m 碰撞检测返回的信息
- * @param prop1 第一个物体(m.o1)的基本属性
- * @param prop2 第二个物体(m.o2)的基本属性
- *
- * 这个函数根据Object的碰撞分类(colli_type)来进行不同的碰撞之后的操作。
- */
-void ColliDealFunc(Manifold& m, BasicProp* prop1, BasicProp* prop2);
 
 #endif

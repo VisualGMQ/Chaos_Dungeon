@@ -12,5 +12,7 @@
 #include "Number.hpp"
 #include "Timer.hpp"
 #include "KilledEnemyNum.hpp"
+#include "UIString.hpp"
+#include "RangeThrower.hpp"
 
 #endif

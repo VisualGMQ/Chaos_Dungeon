@@ -22,6 +22,7 @@ public:
     void Attack();
     void Die();
     void Walk(Vec vel);
+    void Collied(Object* oth, BasicProp* prop, const Manifold* m) override;
     ~LittleRobo();
 private:
     LittleRobo();
@@ -37,7 +38,6 @@ private:
     int die_count;
     FlipFlag hori_flag;
     int die_time_count;
-    int oldhp;
 };
 
 #endif

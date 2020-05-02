@@ -13,7 +13,6 @@
 #include "math.hpp"
 #include "Camera.hpp"
 #include "Sprite/ObjJunkRecycle.hpp"
-#include <vector>
 #include <iostream>
 #include <map>
 #include <ctime>
