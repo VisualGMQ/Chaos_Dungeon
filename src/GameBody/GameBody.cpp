@@ -9,7 +9,7 @@ GameBody::GameBody(){
     IMG_Init(IMG_INIT_JPG|IMG_INIT_PNG);
     TTF_Init();
     const int WindowWidth = 1200, WindowHeight = 800;
-    SDL_Window* window = SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WindowWidth, WindowHeight, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE);
+    SDL_Window* window = SDL_CreateWindow("混乱地牢", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WindowWidth, WindowHeight, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE);
     if(!window){
         cerr<<"window can't create"<<endl;
     }
