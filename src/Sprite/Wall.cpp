@@ -1,13 +1,13 @@
 #include "Sprite/Wall.hpp"
 
-Wall::Wall(){
-    name = "Wall";
-}
-
 Wall* Wall::Create(){
     auto* w = new Wall;
     w->Init();
     return w;
+}
+
+Wall::Wall(){
+    name = "Wall";
 }
 
 void Wall::Init() {

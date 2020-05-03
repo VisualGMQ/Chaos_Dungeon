@@ -1,6 +1,7 @@
 #include "GameBody/GameBody.hpp"
 
 GameBody::GameBody(){
+    srand(time(nullptr));
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -38,7 +39,6 @@ void GameBody::init(){
     wm->CreateLayer("bullet");
     wm->CreateLayer("ui");
 
-
     Director* director = Director::GetInstance();
     MainRole* mainrole = MainRole::GetRole();
 
@@ -57,49 +57,88 @@ void GameBody::init(){
     for(int i=0;i<col;i++) {
         Wall* w = Wall::Create();
         w->MoveTo(i*w->Width(), 0);
-        wm->AddGameObject("object", w);
+        wm->AddGameObject("item", w);
         Wall* w2 = Wall::Create();
         w2->MoveTo(i*w2->Width(), director->Height()-w->Height()); 
-        wm->AddGameObject("object", w2);
+        wm->AddGameObject("item", w2);
     }
     for(int i=1;i<row-1;i++){
-        if(i!=5){
-            Wall* w = Wall::Create();
-            w->MoveTo(0, i*w->Height());
-            wm->AddGameObject("object", w);
-            Wall* w2 = Wall::Create();
-            w2->MoveTo(director->Width()-w2->Width(), i*w->Height()); 
-            wm->AddGameObject("object", w2);
-        }else{
-            Door* door = Door::Create();
-            door->MoveTo(0,i*door->Height());
-            wm->AddGameObject("object", door);
-            door = Door::Create();
-            door->MoveTo(director->Width()-door->Width(),i*door->Height());
-            wm->AddGameObject("object", door);
-        }
+        Wall* w = Wall::Create();
+        w->MoveTo(0, i*w->Height());
+        wm->AddGameObject("item", w);
+        Wall* w2 = Wall::Create();
+        w2->MoveTo(director->Width()-w2->Width(), i*w->Height()); 
+        wm->AddGameObject("item", w2);
     }
     LittleRobo* robo = LittleRobo::Create();
     robo->Init();
     robo->MoveTo(500, 500);
     wm->AddGameObject("object", robo);
-    
+
     //Timer
     timer = Timer::Create();
     timer->Scale(5, 5);
-    timer->MoveTo(300, director->Height()-20);
+    timer->MoveTo(400, director->Height()-20);
+    timer->Start();
     wm->AddGameObject("ui", timer);
 
     //KilledEnemyNum
     KilledEnemyNum_Sington* kilennum = KilledEnemyNum_Sington::GetInstance();
     kilennum->Scale(5, 5);
-    kilennum->MoveTo(550, director->Height()-20);
+    kilennum->MoveTo(650, director->Height()-20);
     wm->AddGameObject("ui", KilledEnemyNum_Sington::GetInstance());
 
-    //test RangeThrower
-    //RangeThrower* thrower = RangeThrower::Create();
-    //thrower->MoveTo(400, 400);
-    //wm->AddGameObject("object", thrower);
+    randTraps();
+}
+
+void GameBody::randTraps(){
+    while(!traps.empty()){
+        IDType id = traps.back().id;
+        traps.pop_back();
+        WorldModel::GetInstance()->DeleteElem(id);
+        ColliSystem::GetInstance()->DeleteElem(id);
+    }
+    Director* director = Director::GetInstance();
+    const int col = director->Width()/48-4,
+          row = director->Height()/48-4;
+    const int trap_size = rand()%(40-2+1)+2;
+    int tile_count = 0;
+    while(tile_count<trap_size){
+        bool loop = true;
+        while(loop){
+            loop = false;
+            int c = rand()%(col+1)+2,
+                r = rand()%(row+1)+2;
+            for(int i=0;i<traps.size();i++){
+                if(traps.at(i).pos.x==c && traps.at(i).pos.y==r)
+                    loop = true;
+            }
+            if(!loop){
+                int type = rand()%3;    //类型，0为墙，1为WaterTrap，2为Magena
+                if(type==0){
+                    Wall* wall = Wall::Create();
+                    WorldModel::GetInstance()->AddGameObject("item", wall);
+                    ColliSystem::GetInstance()->AddColliable(wall);
+                    wall->MoveTo(c*48, r*48);
+                    traps.push_back({wall->Position(), wall->GetID()});
+                    tile_count++;
+                }else if(type==1){
+                    WaterTrap* trap = WaterTrap::Create();
+                    WorldModel::GetInstance()->AddGameObject("item", trap);
+                    trap->MoveTo(c*48, r*48);
+                    traps.push_back({trap->Position(), trap->GetID()});
+                    tile_count++;
+                }else if(type==2){
+                    Magema* trap = Magema::Create();
+                    WorldModel::GetInstance()->AddGameObject("item", trap);
+                    ColliSystem::GetInstance()->AddColliable(trap);
+                    trap->MoveTo(c*48, r*48);
+                    traps.push_back({trap->Position(), trap->GetID()});
+                    tile_count++;
+                }
+            }
+        }   
+    }
 }
 
 void GameBody::initCursor(){
@@ -129,26 +168,35 @@ void GameBody::Update(){
                 }
             }
         }
-        step();
+        game_step();
         SDL_GL_SwapWindow(direct->GetWindow());
         SDL_Delay(1000.0/direct->fps);
     }
 }
 
-void GameBody::step(){
+void GameBody::game_step(){
     static int time_count = 0;
-    static int enemy_num = 1;
+    static int time_count2 = 0;
+    static int enemy_num = 2;
+    if(Director::GetInstance()->isover)
+        timer->Pause();
+    if(time_count2<=250){
+        time_count2++;
+    }else{
+        time_count2 = 0;
+        cout<<"rand traps"<<endl;
+        randTraps(); 
+        cout<<"end rand"<<endl;
+    }
     if(time_count<100)
         time_count++;
     else{
         time_count = 0;
-        srand(time(nullptr));
         for(int i=0;i<enemy_num;i++){
             LittleRobo* robo = LittleRobo::Create();
             robo->MoveTo(rand()%(600-0+1)+100, rand()%(400+1)+100);
             WorldModel::GetInstance()->AddGameObject("main", robo);
         }
-        enemy_num++;
     }
     WorldModel::GetInstance()->Update();
     ObjJunkRecycle();

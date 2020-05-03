@@ -10,6 +10,9 @@ public:
     void IncreaseMilliSecond(int millisec);
     void Reset();
     void Scale(float sx, float sy);
+    void Start();
+    void Stop();
+    void Pause();
 private:
     void update() override;
     void draw() override;
@@ -19,6 +22,7 @@ private:
     int min;
     int sec;
     int millisec;
+    bool start;
     Number* num;
     Texture tex_colon;
     Texture tex_ico;

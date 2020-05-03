@@ -13,6 +13,7 @@
 #include "Timer.hpp"
 #include "KilledEnemyNum.hpp"
 #include "UIString.hpp"
-#include "RangeThrower.hpp"
+#include "WaterTrap.hpp"
+#include "Magema.hpp"
 
 #endif

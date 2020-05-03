@@ -10,6 +10,8 @@ void Colliable::Collied(Object* oth, BasicProp* prop, const Manifold* m){}
 
 void DefaultColliFunc(Manifold* m, BasicProp* prop1, BasicProp* prop2){
     Vec v_o1o2 = m->o2->Center()-m->o1->Center();
+    //如果为UNKNOW，没有要执行的系统函数
+
     //如果双方都是SOLIDABLE，那么应当碰撞后分离
     if(HAS_STATE(m->o1->GetColliType(), ColliType::SOLIDABLE)&&HAS_STATE(m->o2->GetColliType(), ColliType::SOLIDABLE)){
         char sign = v_o1o2.Dot(m->dir)>=0?-1:1;
@@ -37,5 +39,13 @@ void DefaultColliFunc(Manifold* m, BasicProp* prop1, BasicProp* prop2){
     }
     if(prop2 && HAS_STATE(m->o2->GetColliType(), ColliType::BULLETABLE)){
         prop2->hp--;
+    }
+
+    //WAVEABLE在碰撞之后将所有的碰撞物体的生命值都减去
+    if(prop1 && prop2 && HAS_STATE(m->o1->GetColliType(), ColliType::WAVEABLE)){
+        prop2->hp -= prop1->damage;
+    }
+    if(prop1 && prop2 && HAS_STATE(m->o2->GetColliType(), ColliType::WAVEABLE)){
+        prop1->hp -= prop2->damage;
     }
 }

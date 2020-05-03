@@ -49,7 +49,7 @@ MainRole::MainRole():state(MainRole::State::INIT),draw_ptr(&tex_stand),oldhp(0){
 }
 
 void MainRole::Init() {
-    prop.hp = 3;
+    prop.hp = 10;
     prop.damage = 0;
     ColliSystem::GetInstance()->AddDamageable(this);
     ani_init.Play();
@@ -86,7 +86,7 @@ void MainRole::bomb(){
 }
 
 void MainRole::Collied(Object* oth, BasicProp* prop, const Manifold* m){
-    if(HAS_STATE(oth->GetColliType(), ColliType::BULLETABLE)){
+    if(HAS_STATE(oth->GetColliType(), ColliType::BULLETABLE || HAS_STATE(oth->GetColliType(), ColliType::WAVEABLE))){
         TextureSheet ts("resources/buster2.png", 5, 1);
         ts.Scale(3, 3);
         OneUseAnimation* ani = OneUseAnimation::Create();
@@ -166,6 +166,7 @@ void MainRole::die_logic() {
     gameover_tex->Scale(10, 10);
     gameover_tex->MoveTo(Director::GetInstance()->Width()/2, Director::GetInstance()->Height()/2+100);
     WorldModel::GetInstance()->AddGameObject("object", gameover_tex);
+    Director::GetInstance()->isover = true;
 }
 
 void MainRole::draw() {

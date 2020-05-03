@@ -15,9 +15,15 @@
 #include "Sprite/ObjJunkRecycle.hpp"
 #include <iostream>
 #include <map>
+#include <vector>
 #include <ctime>
 #include <random>
 using namespace std;
+
+struct TrapInfo{
+    Vec pos;
+    IDType id;
+};
 
 class GameBody{
 public:
@@ -27,8 +33,10 @@ public:
 protected:
     void initCursor();
     void init();
-    void step();
+    void randTraps();
+    void game_step();
     map<SDL_Keysym, bool> keys;
+    vector<TrapInfo> traps;
     Vec mouse_pos;
     SDL_Cursor* cursor;
     Timer* timer;

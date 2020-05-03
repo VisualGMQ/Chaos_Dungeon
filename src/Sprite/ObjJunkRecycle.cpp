@@ -16,7 +16,8 @@ void ObjJunkRecycle(){
             RECYCLE_FINALCLASS_BY_INSTANCE(Bomb, GameObject::_objects, obj)
             RECYCLE_FINALCLASS_BY_INSTANCE(Number, GameObject::_objects, obj)
             RECYCLE_FINALCLASS_BY_INSTANCE(UIString, GameObject::_objects, obj)
-            RECYCLE_FINALCLASS_BY_INSTANCE(RangeThrower, GameObject::_objects, obj)
+            RECYCLE_FINALCLASS_BY_INSTANCE(WaterTrap, GameObject::_objects, obj)
+            RECYCLE_FINALCLASS_BY_INSTANCE(Magema, GameObject::_objects, obj)
         }
         GameObject::_objects.clear();
         GameObject::_willdel_list.clear();
@@ -38,7 +39,8 @@ void ObjJunkRecycle(){
                     RECYCLE_FINALCLASS_BY_ITER(Bomb, GameObject::_objects, i)
                     RECYCLE_FINALCLASS_BY_ITER(Number, GameObject::_objects, i)
                     RECYCLE_FINALCLASS_BY_ITER(UIString, GameObject::_objects, i)
-                    RECYCLE_FINALCLASS_BY_ITER(RangeThrower, GameObject::_objects, i)
+                    RECYCLE_FINALCLASS_BY_ITER(WaterTrap, GameObject::_objects, i)
+                    RECYCLE_FINALCLASS_BY_ITER(Magema, GameObject::_objects, i)
                 }
             }
         }

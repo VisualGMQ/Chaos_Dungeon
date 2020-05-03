@@ -27,7 +27,7 @@ LittleRobo::LittleRobo():state(State::STAND),die_count(0),hori_flag(FlipFlag::NO
 }
 
 void LittleRobo::Collied(Object* oth, BasicProp* prop, const Manifold* m){
-    if(HAS_STATE(oth->GetColliType(), ColliType::BULLETABLE)){
+    if(HAS_STATE(oth->GetColliType(), ColliType::BULLETABLE || HAS_STATE(oth->GetColliType(), ColliType::WAVEABLE))){
         TextureSheet ts("resources/buster2.png", 5, 1);
         ts.Scale(3, 3);
         OneUseAnimation* ani = OneUseAnimation::Create();

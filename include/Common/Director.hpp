@@ -36,6 +36,10 @@ public:
     void Update();
     bool IsQuit() const;
     int fps;
+    void ChangeScene(int num);
+    int GetSceneID() const;
+    bool isquit;
+    bool isover;
 private:
     static Director* director;
     SDL_Window* window;
@@ -47,7 +51,7 @@ private:
     map<Uint8, bool> mousekeys;
     map<Uint8, bool> oldmousekeys;
     Vec mousepos;
-    bool isquit;
+    int scene_num;
     Director(SDL_Window* window, int w, int h, int fps);
 };
 

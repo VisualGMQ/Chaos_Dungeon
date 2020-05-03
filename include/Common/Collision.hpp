@@ -58,7 +58,8 @@ enum ColliType{
     FORCEABLE = 0x04,    /** 物体在碰撞之后会根据自身速度和质量给另一个物体一个冲量 */
     INDESTRUCTIBLE = 0x08, /** 不可被摧毁的，这种物体在碰撞之后不会由于生命值为0而被销毁 */
     BULLETABLE = 0x10, /** 物体是子弹，子弹在每次碰撞之后都会将自己的生命值减1 */
-    WAVEABLE = 0x20 /** 冲击波式，会伤害到范围内的所有Damageable单位 */
+    WAVEABLE = 0x20, /** 冲击波式，会伤害到范围内的所有Damageable单位 */
+    TRAPABLE = 0x30, /** 陷阱式，没有系统的碰撞处理 */
 };
 
 struct PhysicInfo{

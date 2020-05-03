@@ -105,9 +105,9 @@ void ColliSystem::Update(){
         for(int j=0;j<dmgSprites.size();j++){
             Manifold m;
             if(Collision(&oneuseSprites.at(i)->GetColliObject(), &dmgSprites.at(j)->GetColliObject(), m)){
-                DefaultColliFunc(&m, &dmgSprites.at(j)->prop, nullptr);
+                DefaultColliFunc(&m, &oneuseSprites.at(i)->prop, &dmgSprites.at(j)->prop);
                 callColliDealFunc(&m, oneuseSprites.at(i), dmgSprites.at(j), &dmgSprites.at(j)->prop);
-                callColliDealFunc(&m, dmgSprites.at(j), oneuseSprites.at(i), nullptr);
+                callColliDealFunc(&m, dmgSprites.at(j), oneuseSprites.at(i), &oneuseSprites.at(i)->prop);
             }   
         }
     }

@@ -5,6 +5,7 @@ Timer* Timer::Create(){
 }
 
 Timer::Timer(){
+    start = false;
     tex_colon.Load("resources/colon.png");
     tex_ico.Load("resources/timer_ico.png");
     Reset();
@@ -28,6 +29,19 @@ void Timer::IncreaseMilliSecond(int millisec){
     }
 }
 
+void Timer::Start(){
+    start = true;
+}
+
+void Timer::Stop(){
+    start = false;
+    Reset();
+}
+
+void Timer::Pause(){
+    start = false;
+}
+
 void Timer::Reset(){
     sec = 0;
     min = 0;
@@ -41,8 +55,10 @@ void Timer::Scale(float sx, float sy){
 }
 
 void Timer::update(){
-    IncreaseMilliSecond((SDL_GetTicks()-tick));
-    tick = SDL_GetTicks();
+    if(start){
+        IncreaseMilliSecond((SDL_GetTicks()-tick));
+        tick = SDL_GetTicks();
+    }
 }
 
 void Timer::draw(){
@@ -50,7 +66,7 @@ void Timer::draw(){
     const int colon_width = tex_colon.Width();
     tex_ico.Draw(Position().x, Position().y+5);
     int offset_x = tex_ico.Width()+2;
-    
+
     //draw hour, if hour is zero, don't draw it
     if(hour!=0){
         num->SetNum(hour);

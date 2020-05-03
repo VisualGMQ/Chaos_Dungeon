@@ -19,6 +19,10 @@ void Director::Quit(){
     delete director;
 }
 
+void Director::ChangeScene(int id){
+    scene_num = id;
+}
+
 Director* Director::GetInstance(){
     return director;
 }
@@ -115,9 +119,15 @@ bool Director::IsQuit() const{
     return isquit;
 }
 
+int Director::GetSceneID() const{
+    return scene_num;
+}
+
 Director::Director(SDL_Window* window, int w, int h, int fps):isquit(false),width(w),height(h){
     this->window = window;
     this->fps = fps;
+    scene_num = 0;
+    isover = false;
 }
 
 void Director::Exit(){
