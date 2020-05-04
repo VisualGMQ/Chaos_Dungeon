@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project("Chaose Dungeon")
+project("ChaoseDungeon")
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -Wall -g")
@@ -7,7 +7,6 @@ set(CMAKE_C_FLAGS_DEBUG "-O0 -Wall -g")
 set(CMAKE_CXX_FLAGS_RELEASE"-O3")
 set(CMAKE_C_FLAGS_RELEASE "-O3")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-add_compile_options("-g")
 
 aux_source_directory(${CMAKE_SOURCE_DIR}/src/Common SRC)
 include_directories(${CMAKE_SOURCE_DIR}/include/Common)
@@ -53,15 +52,13 @@ link_libraries("-L${CMAKE_BINARY_DIR} -lcommon")
 
 #generate executable
 set(APP_NAME "Chaose_Dungeon")
-aux_source_directory(${CMAKE_SOURCE_DIR}/src/GameBody DEP_SRC)
-aux_source_directory(${CMAKE_SOURCE_DIR}/src/Sprite DEP_SRC)
+aux_source_directory(src/GameBody DEP_SRC)
+aux_source_directory(src/Sprite DEP_SRC)
 add_executable(${APP_NAME} main.cpp ${DEP_SRC})
 target_link_libraries(${APP_NAME} "common")
 add_custom_command(TARGET ${APP_NAME}
     POST_BUILD 
     COMMAND cp ./compile_commands.json ../compile_commands.json)
-
-add_subdirectory(test)
 
 install(
     TARGETS ${APP_NAME}
@@ -75,3 +72,5 @@ install(
     DIRECTORY ${CMAKE_SOURCE_DIR}/shader
     DESTINATION ${CMAKE_SOURCE_DIR}/Chaose_Dungeon
     )
+
+add_subdirectory(test)
