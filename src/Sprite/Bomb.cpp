@@ -7,9 +7,9 @@ Bomb* Bomb::Create(){
 
 Bomb::Bomb():fire_time(50),time_count(0){
     name = "Bomb";
-    tex.Load("resources/bomb.png");
+    tex.Load("./resources/bomb.png");
     tex.Scale(3, 3);
-    TextureSheet ts("resources/bomb_firing.png", 5, 1);
+    TextureSheet ts("./resources/bomb_firing.png", 5, 1);
     ani_fire.Load(ts, {2, 2, 2, 2, 2});
     ani_fire.Scale(3, 3);
     ani_fire.EnableLoop();
@@ -35,7 +35,7 @@ void Bomb::update(){
         else{
             state = State::BOMB;
             WorldModel::GetInstance()->DeleteElem(GetID());
-            TextureSheet ts("resources/bomb_wave.png", 4, 1);
+            TextureSheet ts("./resources/bomb_wave.png", 4, 1);
             ts.Scale(4, 4);
             OneUseAnimation* ani_wave = OneUseAnimation::Create();
             ani_wave->Load(ts, {2, 2, 2, 2});
@@ -46,6 +46,8 @@ void Bomb::update(){
             colli_wave->MoveTo(Position().x, Position().y);
             colli_wave->prop.damage = 5;
             ColliSystem::GetInstance()->AddOneUseable(colli_wave);
+
+            Mix_PlayMusic(MusicRepo::Get("bomb"), 1);
         }
     }
     ani_fire.Update();

@@ -19,6 +19,9 @@ void Bullet::Init() {
     prop.hp = 1;
     prop.damage = 1;
     ColliSystem::GetInstance()->AddDamageable(this);
+    
+    //播放音效
+    Mix_PlayMusic(MusicRepo::Get("bullet"), 1);
 }
 
 void Bullet::SetShootVel(Vec pos, Vec vel){
@@ -57,7 +60,6 @@ void Bullet::update() {
         buster->Load(ts, {2, 2, 2, 2, 2});
         buster->MoveTo(Position().x, Position().y);
         WorldModel::GetInstance()->AddGameObject("effect", buster);
-
     }
 }
 

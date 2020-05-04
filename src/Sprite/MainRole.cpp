@@ -34,13 +34,13 @@ MainRole* MainRole::GetRole(){
 
 MainRole::MainRole():state(MainRole::State::INIT),draw_ptr(&tex_stand),oldhp(0){
     name = "MainRole";
-    tex_stand.Load("resources/mainrole_stand.png");
+    tex_stand.Load("./resources/mainrole_stand.png");
     tex_stand.Scale(3, 3);
-    TextureSheet ts("resources/mainrole_walk.png", 2, 1);
+    TextureSheet ts("./resources/mainrole_walk.png", 2, 1);
     ani_walk.Load(ts, {4, 4});
     ani_walk.Scale(3, 3);
     ani_walk.EnableLoop();
-    TextureSheet ts2("resources/mainrole_init.png", 4, 1);
+    TextureSheet ts2("./resources/mainrole_init.png", 4, 1);
     ts2.Scale(3, 3);
     ani_init.Load(ts2, {3, 3, 5, 5});
     colliobj.Set(AABB(Position().x-tex_stand.Width()/2, Position().y-tex_stand.Height()/2, tex_stand.Width(), tex_stand.Height()));
@@ -59,7 +59,7 @@ void MainRole::Init() {
 void MainRole::update() {
     Creature::update();
     if(oldhp>prop.hp){
-        TextureSheet ts("resources/buster2.png", 5, 1);
+        TextureSheet ts("./resources/buster2.png", 5, 1);
         ts.Scale(3, 3);
         OneUseAnimation* ani = OneUseAnimation::Create();
         ani->Load(ts, {1, 1, 1, 1, 1});
@@ -87,7 +87,7 @@ void MainRole::bomb(){
 
 void MainRole::Collied(Object* oth, BasicProp* prop, const Manifold* m){
     if(HAS_STATE(oth->GetColliType(), ColliType::BULLETABLE || HAS_STATE(oth->GetColliType(), ColliType::WAVEABLE))){
-        TextureSheet ts("resources/buster2.png", 5, 1);
+        TextureSheet ts("./resources/buster2.png", 5, 1);
         ts.Scale(3, 3);
         OneUseAnimation* ani = OneUseAnimation::Create();
         ani->Load(ts, {1, 1, 1, 1, 1});
@@ -153,7 +153,7 @@ void MainRole::walk(){
 }
 
 void MainRole::die_logic() {
-    TextureSheet ts("resources/mainrole_die.png", 4, 1);
+    TextureSheet ts("./resources/mainrole_die.png", 4, 1);
     ts.Scale(3, 3);
     OneUseAnimation* ani_die = OneUseAnimation::Create();
     ani_die->Load(ts, {10, 10, 10, 500});
@@ -162,7 +162,7 @@ void MainRole::die_logic() {
     WorldModel::GetInstance()->TakeAway("object", GetID());
     ColliSystem::GetInstance()->DeleteElem(GetID());
     StaticTexture* gameover_tex = StaticTexture::Create();
-    gameover_tex->Load("resources/GameOver.png");
+    gameover_tex->Load("./resources/GameOver.png");
     gameover_tex->Scale(10, 10);
     gameover_tex->MoveTo(Director::GetInstance()->Width()/2, Director::GetInstance()->Height()/2+100);
     WorldModel::GetInstance()->AddGameObject("object", gameover_tex);

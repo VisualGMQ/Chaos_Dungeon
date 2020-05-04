@@ -9,13 +9,13 @@ LittleRobo* LittleRobo::Create(){
 LittleRobo::LittleRobo():state(State::STAND),die_count(0),hori_flag(FlipFlag::NONE){
     name = "LittleRobo";
     prop.can_damage = false;
-    tex_stand.Load("resources/monster1_stand.png");
+    tex_stand.Load("./resources/monster1_stand.png");
     tex_stand.Scale(3, 3);
-    TextureSheet ts_walk("resources/monster1_walk.png", 2, 1);
+    TextureSheet ts_walk("./resources/monster1_walk.png", 2, 1);
     ts_walk.Scale(3, 3);
     ani_walk.Load(ts_walk, {5, 5});
     ani_walk.EnableLoop();
-    TextureSheet ts_att("resources/monster1_attack.png", 7, 1);
+    TextureSheet ts_att("./resources/monster1_attack.png", 7, 1);
     ts_att.Scale(3, 3);
     ani_attack.Load(ts_att, {2, 2, 2, 3, 2, 2, 2});
     ani_attack.BindProp(&prop);
@@ -28,7 +28,7 @@ LittleRobo::LittleRobo():state(State::STAND),die_count(0),hori_flag(FlipFlag::NO
 
 void LittleRobo::Collied(Object* oth, BasicProp* prop, const Manifold* m){
     if(HAS_STATE(oth->GetColliType(), ColliType::BULLETABLE || HAS_STATE(oth->GetColliType(), ColliType::WAVEABLE))){
-        TextureSheet ts("resources/buster2.png", 5, 1);
+        TextureSheet ts("./resources/buster2.png", 5, 1);
         ts.Scale(3, 3);
         OneUseAnimation* ani = OneUseAnimation::Create();
         ani->Load(ts, {1, 1, 1, 1, 1});
@@ -102,7 +102,7 @@ void LittleRobo::alive_logic(){
     }
 }
 void LittleRobo::die_logic(){
-    TextureSheet ts("resources/monster1_die.png", 1, 1);
+    TextureSheet ts("./resources/monster1_die.png", 1, 1);
     ts.Scale(3, 3);
     OneUseAnimation* ani = OneUseAnimation::Create();
     ani->Flip(hori_flag);

@@ -11,7 +11,7 @@ Wall::Wall(){
 }
 
 void Wall::Init() {
-    texture.Load("resources/wall.png");
+    texture.Load("./resources/wall.png");
     texture.Scale(3, 3);
     colliobj.Set(AABB(topleft().x, topleft().y, texture.Size().w, texture.Size().h));
     colliobj.physic_info.m = 0;

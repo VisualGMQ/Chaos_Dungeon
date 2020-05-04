@@ -6,7 +6,7 @@ WaterTrap* WaterTrap::Create(){
 
 WaterTrap::WaterTrap():count(0){
     name = "WaterTrap";
-    TextureSheet ts("resources/trap2.png", 6, 1);
+    TextureSheet ts("./resources/trap2.png", 6, 1);
     ts.Scale(3, 3);
     ani.Load(ts, {2, 3, 3, 3, 3, 3});
     randDelayTime();

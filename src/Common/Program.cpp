@@ -4,8 +4,8 @@ Program Program::program;
 
 Program& Program::GetInstance(){
     if(!program.Valid()){
-        GLuint vshader = program.CompileShader("shader/shader.vs", ShaderType::VERTEX_SHADER),
-                fshader = program.CompileShader("shader/shader.fs", ShaderType::FRAG_SHADER);
+        GLuint vshader = program.CompileShader("./shader/shader.vs", ShaderType::VERTEX_SHADER),
+                fshader = program.CompileShader("./shader/shader.fs", ShaderType::FRAG_SHADER);
         program.LinkProgram(vshader, fshader);
         glDeleteShader(vshader);
         glDeleteShader(fshader);

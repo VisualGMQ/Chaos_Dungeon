@@ -3,12 +3,13 @@
 #define GLEW_STATIC
 #include "GL/glew.h"
 #include "SDL.h"
-#include "SDL_ttf.h"
 #include "SDL_image.h"
+#include "SDL_mixer.h"
 #include "Director.hpp"
 #include "Program.hpp"
 #include "Sprite/Sprites.hpp"
 #include "Sprite/WorldModel.hpp"
+#include "Sprite/MusicRepo.hpp"
 #include "ColliSystem.hpp"
 #include "math.hpp"
 #include "Camera.hpp"
@@ -40,6 +41,7 @@ protected:
     Vec mouse_pos;
     SDL_Cursor* cursor;
     Timer* timer;
+    SDL_Surface* surf_ico;
 };
 
 #endif

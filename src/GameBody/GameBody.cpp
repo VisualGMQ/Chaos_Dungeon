@@ -7,7 +7,11 @@ GameBody::GameBody(){
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     IMG_Init(IMG_INIT_JPG|IMG_INIT_PNG);
-    TTF_Init();
+    Mix_Init(MIX_INIT_FLAC|MIX_INIT_MOD|MIX_INIT_MP3|MIX_INIT_OGG);
+    if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 512)==-1){
+        cerr<<"Mix init failed"<<endl;
+        Director::GetInstance()->Quit();
+    }
     const int WindowWidth = 1200, WindowHeight = 800;
     SDL_Window* window = SDL_CreateWindow("混乱地牢", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WindowWidth, WindowHeight, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE);
     if(!window){
@@ -18,11 +22,18 @@ GameBody::GameBody(){
         cerr<<"glew init failed"<<endl;
     }
     Director::Init(window, WindowWidth, WindowHeight, 30);
+    surf_ico = IMG_Load("./resources/icon.png");
+    SDL_SetWindowIcon(window, surf_ico);
     init();
 }
 
 void GameBody::init(){
+    //初始化光标
     initCursor();
+    //初始化音频库
+    MusicRepo::AddMusic("bullet", "./resources/bullet.wav");
+    MusicRepo::AddMusic("bomb", "./resources/bomb.wav");
+
     WorldModel* wm = WorldModel::GetInstance();
     
     //初始化一些层
@@ -142,7 +153,11 @@ void GameBody::randTraps(){
 }
 
 void GameBody::initCursor(){
-    SDL_Surface* sur_cursor = IMG_Load("resources/cursor.png");
+    SDL_Surface* sur_cursor = IMG_Load("./resources/cursor.png");
+    if(!sur_cursor){
+        cerr<<"resources/cursor.png load failed in initCursor()"<<endl;
+        return;
+    }
     cursor = SDL_CreateColorCursor(sur_cursor, sur_cursor->w/2, sur_cursor->h/2);
     SDL_FreeSurface(sur_cursor);
     SDL_SetCursor(cursor);
@@ -184,9 +199,7 @@ void GameBody::game_step(){
         time_count2++;
     }else{
         time_count2 = 0;
-        cout<<"rand traps"<<endl;
         randTraps(); 
-        cout<<"end rand"<<endl;
     }
     if(time_count<100)
         time_count++;
@@ -204,13 +217,16 @@ void GameBody::game_step(){
 }
 
 GameBody::~GameBody(){
+    SDL_FreeSurface(surf_ico);
     SDL_FreeCursor(cursor);
     Director::Quit();
-    WorldModel::Destroy();
     Camera::Destroy();
-    GameObject::ClearAllObject();
     ObjJunkRecycle();
-    SDL_Quit();
-    TTF_Quit();
+    WorldModel::Destroy();
+    GameObject::ClearAllObject();
+    MusicRepo::Quit();
+    Mix_CloseAudio();
     IMG_Quit();
+    Mix_Quit();
+    SDL_Quit();
 }

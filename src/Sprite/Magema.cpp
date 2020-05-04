@@ -8,7 +8,7 @@ Magema* Magema::Create(){
 
 Magema::Magema(){
     name = "Magema";
-    TextureSheet ts("resources/magma.png", 6, 1);
+    TextureSheet ts("./resources/magma.png", 6, 1);
     ts.Scale(3, 3);
     ani.Load(ts, {2, 2, 2, 2, 2, 2});
     ani.EnableLoop();

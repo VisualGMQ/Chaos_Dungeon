@@ -1,9 +1,10 @@
 #ifndef BULLET_HPP
 #define BULLET_HPP
-#include "Sprite/DamageableSprite.hpp"
+#include "DamageableSprite.hpp"
 #include "WorldModel.hpp"
 #include "Camera.hpp"
 #include "OneUseAnimation.hpp"
+#include "MusicRepo.hpp"
 
 class Bullet final : public DamageableSprite{
 public:
