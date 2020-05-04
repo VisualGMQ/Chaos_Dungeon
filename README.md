@@ -24,6 +24,6 @@ wsad移动，鼠标左键发射子弹，右键释放炸弹（会炸到自己）
 
 ## 游戏截图
 
-![snapshoot1](/Users/visualgmq/Documents/program/Games/Rouglike/snapshoot/pic1.png)
+![snapshoot1](./snapshoot/pic1.png)
 
-![snapshoot2](/Users/visualgmq/Documents/program/Games/Rouglike/snapshoot/pic2.png)
+![snapshoot2](./snapshoot/pic2.png)
