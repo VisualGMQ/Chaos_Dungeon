@@ -14,9 +14,10 @@ cd build
 cmake ..
 make
 make install
+cd ..
 ```
 
-这个时候你会在上一个目录下找到Chaose_Dungeon文件夹，执行`./Chaose_Dungeon/Chaose_Dungeon`即可运行。
+这个时候你会看到Chaose_Dungeon文件夹，执行`./Chaose_Dungeon/Chaose_Dungeon`即可运行。
 
 ## 游戏操作
 
@@ -24,6 +25,5 @@ wsad移动，鼠标左键发射子弹，右键释放炸弹（会炸到自己）
 
 ## 游戏截图
 
-![snapshoot1](./snapshoot/pic1.png)
-
-![snapshoot2](./snapshoot/pic2.png)
+![YCEsaj.png](https://s1.ax1x.com/2020/05/04/YCEsaj.png)
+![YCErZQ.png](https://s1.ax1x.com/2020/05/04/YCErZQ.png)
