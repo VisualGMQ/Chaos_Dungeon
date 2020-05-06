@@ -4,7 +4,9 @@
 
 ## 如何编译
 
-编译目前只在MacOS系统上编译过，不过Windows和Linux应该也可以（改一改CMakeLists.txt找到所需库路径的话）。
+如果你是Windows系统，请前往`windows_verion`分支，那里有windows下的编译方式和工程。
+
+如果你是MacOS或Linux，看这个就够了。
 
 采用cmake编译，需要SDL2，SDL2_image，SDL2_mixer，glew，glm库。如果有了，请直接
 
