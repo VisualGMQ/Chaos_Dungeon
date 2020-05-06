@@ -3,6 +3,7 @@
 #include "math.hpp"
 #include "Sprite/BasicProp.hpp"
 #include "HelpFunc.hpp"
+#include <algorithm>
 
 /* 迭代碰撞的次数 */
 #define RETRIVE_COLLI_NUM 8

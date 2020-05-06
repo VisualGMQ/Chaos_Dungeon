@@ -12,29 +12,20 @@ aux_source_directory(${CMAKE_SOURCE_DIR}/src/Common SRC)
 include_directories(${CMAKE_SOURCE_DIR}/include/Common)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-#find pkg-config
-find_package(PkgConfig REQUIRED)
-
 #add SDL2, SDL2_image, SDL2_mixer
-find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS})
-link_libraries(${SDL2_LIBRARIES})
-pkg_search_module(SDL2_image REQUIRED sdl2_image)
-include_directories("/usr/local/include/SDL2")
-link_directories("/usr/local/lib")
-link_libraries("SDL2_image")
-link_libraries("SDL2_mixer")
+include_directories("${CMAKE_SOURCE_DIR}/include/deps/SDL")
+link_directories("${CMAKE_SOURCE_DIR}/libs/SDL")
+link_directories("${CMAKE_SOURCE_DIR}/libs/SDL_image")
+link_directories("${CMAKE_SOURCE_DIR}/libs/SDL_mixer")
+link_libraries(mingw32 SDL2main SDL2 SDL2_image SDL2_mixer)
+add_definitions(-Dmain=SDL_main)
 
-#add glm
-find_package(GLM REQUIRED)
-include_directories(${GLM_INCLUDE_DIRS})
-link_libraries("glm")
 
-#add glew use pkg-config
+#add glew and glm
 set(GLEW_USE_STATIC_LIBS ON)
-pkg_search_module(GLEW REQUIRED glew)
-include_directories(${GLEW_INCLUDE_DIRS})
-link_libraries(${GLEW_LIBRARIES})
+include_directories("./include/deps/OpenGL")
+link_directories("./libs/glew")
+link_libraries(glew32.lib glew32s.lib)
 
 #add OpenGL
 find_package(OpenGL)

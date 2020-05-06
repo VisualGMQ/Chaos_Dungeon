@@ -2,22 +2,28 @@
 
 用14天写的充满bug的小游戏，采用SDL和OpenGL开发。
 
+**这个分支是专门为Windows开创的，在Windows下使用cmake可以进行编译**
+
 ## 如何编译
 
-编译目前只在MacOS系统上编译过，不过Windows和Linux应该也可以（改一改CMakeLists.txt找到所需库路径的话）。
+采用cmake编译，需要SDL2，SDL2_image，SDL2_mixer，glew，glm库。C++和C语言的编译工具为MinGW32的GCC，G++和make(注意是32而不是MinGW64)。
 
-采用cmake编译，需要SDL2，SDL2_image，SDL2_mixer，glew，glm库。如果有了，请直接
+如果你有CMake的GUI版本，那么直接打开GUI版本然后按照常规套路编译就可以。
+如果是控制台版本，需要先：
 
 ```bash
 mkdir build
 cd build
-cmake ..
-make
-make install
-cd ..
 ```
 
-这个时候你会看到Chaose_Dungeon文件夹，执行`./Chaose_Dungeon/Chaose_Dungeon`即可运行。
+然后使用CMake产生MinGW Makefile，然后运行make即可：
+
+```bash
+cmake -G"MinGW Makefiles" ..
+mingw32-make
+```
+
+这个时候你会看到build目录下有Chaose_Dungeon可执行文件，将其复制到上层目录，双击即可开始游戏。
 
 ## 游戏操作
 

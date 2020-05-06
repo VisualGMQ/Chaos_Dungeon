@@ -12,7 +12,7 @@ GameBody::GameBody(){
         cerr<<"Mix init failed"<<endl;
         Director::GetInstance()->Quit();
     }
-    const int WindowWidth = 1200, WindowHeight = 800;
+    const int WindowWidth = 800, WindowHeight = 600;
     SDL_Window* window = SDL_CreateWindow("混乱地牢", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WindowWidth, WindowHeight, SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE);
     if(!window){
         cerr<<"window can't create"<<endl;
@@ -21,7 +21,8 @@ GameBody::GameBody(){
     if(glewInit()!=GLEW_OK){
         cerr<<"glew init failed"<<endl;
     }
-    Director::Init(window, WindowWidth, WindowHeight, 30);
+    const int CanvaWidth = 1200, CanvaHeight = 800;
+    Director::Init(window, CanvaWidth, CanvaHeight, 30);
     surf_ico = IMG_Load("./resources/icon.png");
     SDL_SetWindowIcon(window, surf_ico);
     init();

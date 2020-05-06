@@ -357,7 +357,7 @@ Range getOBBRangeOnAxis(Vec axis, Vec points[4]){
     float value[4];
     for(int i=0;i<4;i++)
         value[i] = axis.Dot(points[i]);
-    pair<float, float> mm = minmax({value[0], value[1], value[2], value[3]});
+    pair<float, float> mm = std::minmax({value[0], value[1], value[2], value[3]});
     return Range(mm.first, mm.second);
 }
 
