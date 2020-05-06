@@ -4,7 +4,7 @@
 
 ## 如何编译
 
-如果你是Windows系统，请前往`windows_verion`分支，那里有windows下的编译方式和工程。
+如果你是Windows系统，请前往`windows_verion`分支，那里有windows下的编译方式和工程（Windows下的DLL和头文件太多了，所以就单独放了）。
 
 如果你是MacOS或Linux，看这个就够了。
 
